@@ -19,6 +19,9 @@
     <ClInclude Include="stdafx.h">
       <Filter>Internal</Filter>
     </ClInclude>
+    <ClInclude Include="GoToAct.h">
+      <Filter>AdventureCheckpoints</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -26,6 +29,9 @@
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Internal</Filter>
+    </ClCompile>
+    <ClCompile Include="GoToAct.cpp">
+      <Filter>AdventureCheckpoints</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

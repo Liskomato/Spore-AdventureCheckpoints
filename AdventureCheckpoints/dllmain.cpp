@@ -1,5 +1,6 @@
 // dllmain.cpp : Defines the entry point for the DLL application.
 #include "stdafx.h"
+#include "GoToAct.h"
 
 void Initialize()
 {
@@ -10,6 +11,7 @@ void Initialize()
 	//  - Add new game modes
 	//  - Add new space tools
 	//  - Change materials
+	CheatManager.AddCheat("GoToAct", new GoToAct());
 }
 
 void Dispose()
