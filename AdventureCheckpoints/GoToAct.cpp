@@ -21,8 +21,9 @@ void GoToAct::ParseLine(const ArgScript::Line& line)
 
 			auto arg = line.GetArgumentAt(1);
 
-			int newAct;
+			uint32_t newAct;
 			auto oldAct = ScenarioMode.GetPlayMode()->mCurrentActIndex;
+			auto actAmount = ScenarioMode.GetResource()->mActs.size();
 
 			try {
 				newAct = mpFormatParser->ParseInt(arg);
@@ -32,12 +33,12 @@ void GoToAct::ParseLine(const ArgScript::Line& line)
 				return;
 			}
 			if (newAct <= 8 && newAct >= 1) {
-			//	if() {
-				SetNewAct(newAct, oldAct);
-			//	}
-			//	else {
-			//		App::ConsolePrintF("The given act index doesn't exist in this adventure!");
-			//	}
+				if(newAct > actAmount) {
+					App::ConsolePrintF("The given act index doesn't exist in this adventure!");
+				}
+				else {
+					SetNewAct(newAct, oldAct);
+				}
 				return;
 			}
 			else {
