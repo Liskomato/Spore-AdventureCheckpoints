@@ -99,6 +99,10 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ContinueCheckpointButton.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="GoToAct.h">
       <SubType>
       </SubType>
@@ -107,6 +111,10 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ContinueCheckpointButton.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="dllmain.cpp">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

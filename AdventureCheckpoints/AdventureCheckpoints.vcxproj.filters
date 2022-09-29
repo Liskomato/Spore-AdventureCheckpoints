@@ -22,6 +22,9 @@
     <ClInclude Include="GoToAct.h">
       <Filter>AdventureCheckpoints</Filter>
     </ClInclude>
+    <ClInclude Include="ContinueCheckpointButton.h">
+      <Filter>AdventureCheckpoints</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -31,6 +34,9 @@
       <Filter>Internal</Filter>
     </ClCompile>
     <ClCompile Include="GoToAct.cpp">
+      <Filter>AdventureCheckpoints</Filter>
+    </ClCompile>
+    <ClCompile Include="ContinueCheckpointButton.cpp">
       <Filter>AdventureCheckpoints</Filter>
     </ClCompile>
   </ItemGroup>
