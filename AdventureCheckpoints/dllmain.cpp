@@ -5,6 +5,8 @@
 #include "AdventureEndScreenListener.h"
 #include "ContinueCheckpointButton.h"
 
+
+
 void Initialize()
 {
 	// This method is executed when the game starts, before the user interface is shown
@@ -85,25 +87,33 @@ member_detour(UILayoutLoad_detour, UILayout, bool(const ResourceKey&, bool, uint
 			
 	//		IWindowPtr parent1 = this->FindWindowByID(0x07C796D0);
 	//		IWindowPtr parent2 = this->FindWindowByID(0x07C79820);
-			/*
-			UTFWin::UILayout button, button2;
+	//		/*
+			Button = new UTFWin::UILayout();
+			Button2 = new UTFWin::UILayout();
 
-			button.LoadByName(u"CheckpointButtonUI");
-			button.SetParentWindow(this->FindWindowByID(0x07C796D0));
+			if (Button->LoadByName(u"CheckpointButtonUI"))
+			Button->SetParentWindow(this->FindWindowByID(0x07C796D0));
 
-			button2.LoadByName(u"CheckpointButtonUI");
-			button2.SetParentWindow(this->FindWindowByID(0x07C79820));
+			if (Button2->LoadByName(u"CheckpointButtonUI"))
+			Button2->SetParentWindow(this->FindWindowByID(0x07C79820));
 
-			button.FindWindowByID(id("CheckpointButton"))->SetLocation(-542, -60);
-			button2.FindWindowByID(id("CheckpointButton"))->SetLocation(-542, -61);
+			IWindowPtr winBtn;
+			if (Button->FindWindowByID(id("CheckpointButton")) != nullptr) {
 
-			button.FindWindowByID(id("CheckpointButton"))->AddWinProc(new ContinueCheckpointButton());
-			button2.FindWindowByID(id("CheckpointButton"))->AddWinProc(new ContinueCheckpointButton());
+				winBtn = Button->FindWindowByID(id("CheckpointButton"));
+				winBtn->SetLocation(-542, -60);
+				winBtn->FindWindowByID(0x07C79940)->AddWinProc(new ContinueCheckpointButton());
 
-			*/
+			}
+			if (Button2->FindWindowByID(id("CheckpointButton")) != nullptr) {
+				winBtn = Button2->FindWindowByID(id("CheckpointButton"));
+				winBtn->SetLocation(-542, -61);
+				winBtn->FindWindowByID(0x07C79940)->AddWinProc(new ContinueCheckpointButton());
+			}
+	//		*/
 
-			this->FindWindowByID(0x07C79820)->FindWindowByID(id("CheckpointButton"))->AddWinProc(new ContinueCheckpointButton());
-			this->FindWindowByID(0x07C796D0)->FindWindowByID(id("CheckpointButton"))->AddWinProc(new ContinueCheckpointButton());
+	//		this->FindWindowByID(0x07C79820)->FindWindowByID(id("CheckpointButton"))->AddWinProc(new ContinueCheckpointButton());
+	//		this->FindWindowByID(0x07C796D0)->FindWindowByID(id("CheckpointButton"))->AddWinProc(new ContinueCheckpointButton());
 
 	//		this->FindWindowByID(0x07C79820)->FindWindowByID(0x07C79940)->AddWinProc(new ContinueCheckpointButton());
 	//		this->FindWindowByID(0x07C796D0)->FindWindowByID(0x07C79940)->AddWinProc(new ContinueCheckpointButton());
@@ -128,6 +138,8 @@ member_detour(UILayoutLoad_detour, UILayout, bool(const ResourceKey&, bool, uint
 void Dispose()
 {
 	// This method is called when the game is closing
+	Button = nullptr;
+	Button2 = nullptr;
 }
 
 void AttachDetours()

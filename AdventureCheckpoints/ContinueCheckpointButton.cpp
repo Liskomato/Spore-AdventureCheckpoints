@@ -51,7 +51,7 @@ bool ContinueCheckpointButton::HandleUIMessage(IWindow* window, const Message& m
 	
 	
 	// */
-	if (message.IsType(kMsgMouseUp))
+	if (message.IsType(kMsgComponentActivated))
 	{
 		App::ConsolePrintF("Button hit. Something should happen.");
 	//	App::ConsolePrintF("Restarting from the current act...");
