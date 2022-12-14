@@ -20,4 +20,9 @@ public:
 	// This is the function you have to implement, called when a message you registered to is sent.
 	bool HandleMessage(uint32_t messageID, void* message) override;
 	void StartFromCheckpoint(int previousAct);
+	bool IsCheckpointActivated();
+	int GetStoredAdventureIndex();
+private:
+	bool checkpointEnabled;
+	int storedActIndex;
 };

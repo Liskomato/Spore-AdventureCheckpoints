@@ -6,6 +6,8 @@
 
 AdventureEndScreenListener::AdventureEndScreenListener()
 {
+	checkpointEnabled = false;
+	storedActIndex = 0;
 }
 
 
@@ -33,26 +35,28 @@ bool AdventureEndScreenListener::HandleMessage(uint32_t messageID, void* message
 	if (messageID == id("StartCheckpointProc")) 
 	{
 
-		StartFromCheckpoint(ScenarioMode.GetPlayMode()->mCurrentActIndex);
-
+		checkpointEnabled = true;
+		storedActIndex = ScenarioMode.GetPlayMode()->mCurrentActIndex;
 	}
-	/*
-	if (messageID == UTFWin::kMsgWinProcAdded) {
-		auto window = (const UTFWin::Message&)message;
-
-		if (window.IsSource(WindowManager.GetMainWindow()->FindWindowByID(id("CheckpointButton")))) {
-			App::ConsolePrintF("Button spawned.");
-		}
+	else if (messageID == id("EndCheckpointProc"))
+	{
+		checkpointEnabled = false;
+		storedActIndex = 0;
 	}
-	*/
 	// Return true if the message has been handled. Other listeners will receive the message regardless of the return value.
 	return true;
 }
 
 void AdventureEndScreenListener::StartFromCheckpoint(int previousAct) {
-	while (GameTimeManager.IsPaused()) {
-		std::this_thread::sleep_for(std::chrono::milliseconds(50));
-	};
+	
 
-	GoToAct::SetNewAct(previousAct, ScenarioMode.GetPlayMode()->mCurrentActIndex);
+//	GoToAct::SetNewAct(previousAct, ScenarioMode.GetPlayMode()->mCurrentActIndex);
+}
+
+bool AdventureEndScreenListener::IsCheckpointActivated() {
+	return checkpointEnabled;
+}
+
+int AdventureEndScreenListener::GetStoredAdventureIndex() {
+	return storedActIndex;
 }

@@ -67,6 +67,7 @@ const char* GoToAct::GetDescription(ArgScript::DescriptionMode mode) const
 void GoToAct::SetNewAct(int newAct, int currentAct) 
 {
 	newAct--;
-	CALL(Address(0xF462B0), void, Args(Simulator::cScenarioData*, int, int, int), Args(ScenarioMode.GetData(), 2, currentAct, newAct));
-	ScenarioMode.GetPlayMode()->SetCurrentAct(newAct);
+	CALL(Address(ModAPI::ChooseAddress(0xf1f7b0, 0xf1f3c0)), void, Args(Simulator::cScenarioPlayMode*, int), Args(ScenarioMode.GetPlayMode(), newAct));
+//	CALL(Address(0xF462B0), void, Args(Simulator::cScenarioData*, int, int, int), Args(ScenarioMode.GetData(), 2, currentAct, newAct));
+//	ScenarioMode.GetPlayMode()->SetCurrentAct(newAct);
 }

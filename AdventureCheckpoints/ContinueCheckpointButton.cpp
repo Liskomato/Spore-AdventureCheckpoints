@@ -45,59 +45,18 @@ int ContinueCheckpointButton::GetEventFlags() const
 bool ContinueCheckpointButton::HandleUIMessage(IWindow* window, const Message& message)
 {
 	
-	/*if (message.IsSource(WindowManager.GetMainWindow()->FindWindowByID(0x07C796D0)->FindWindowByID(0x07C79940)) && !message.IsType(0x1001)) {
-	//	App::ConsolePrintF("0x%x", message.eventType);
-	}*/
-	
-	
-	// */
 	if (message.IsType(kMsgComponentActivated))
 	{
 		App::ConsolePrintF("Button hit. Something should happen.");
 	//	App::ConsolePrintF("Restarting from the current act...");
-			
-	//	auto act = ScenarioMode.GetPlayMode()->mCurrentActIndex;
-		IWindowPtr MainWindow = WindowManager.GetMainWindow();
-		IWindowPtr RestartButton = WindowManager.GetMainWindow()->FindWindowByID(0x07C79940);
-		
-		Message msg = message;
-
-		msg.source = RestartButton.get();
-
-	//	msg.Mouse.mouseX = 640;
-		
-		bool ret = false;
-		/*
-
-		if (RestartButton->GetParent() != nullptr) {
-			
-			IWindowPtr rewardScreen = RestartButton->GetParent();
-			
-			if (rewardScreen->GetParent() != nullptr) {
-
-				IWindowPtr rewardScreenParent = rewardScreen->GetParent();
-				ret = rewardScreenParent->SendMsg(msg);
-				//	std::async(std::launch::async, [&] {StartFromCheckpoint(ScenarioMode.GetPlayMode()->mCurrentActIndex); });
-
-
-				//	MessageManager.PostMSG(id("StartCheckpointProc"),nullptr);
-
-
-				//	ScenarioMode.GetPlayMode()->SetCurrentAct(act-1);
-			}
-			else return false;
-			
-
-		}
-		else return false;
-		
-		*/
 	
+	//	Send message to the listener knowing that the checkpoint button was pressed.
+		MessageManager.PostMSG(id("StartCheckpointProc"),nullptr);
 
 		
 
 		// We did handled the message, return true
-		return ret;
+		return false;
 	}
 //	*/
 	// Return true if the message was handled, and therefore no other window procedure should receive it.

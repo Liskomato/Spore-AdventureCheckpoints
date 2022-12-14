@@ -142,6 +142,23 @@ member_detour(UILayoutLoad_detour, UILayout, bool(const ResourceKey&, bool, uint
 
 };
 
+member_detour(cScenarioPlayMode_Initialize_detour, Simulator::cScenarioPlayMode, void(void)) {
+
+	void detoured()
+	{
+		original_function(this);
+		if (screenListener->IsCheckpointActivated()) 
+		{
+			int lastAct = screenListener->GetStoredAdventureIndex();
+			//	CALL(Address(ModAPI::ChooseAddress(0xf1f7b0, 0xf1f3c0)), void, Args(Simulator::cScenarioPlayMode*, int), Args(ScenarioMode.GetPlayMode(), lastAct));
+			CALL(Address(0xF462B0), void, Args(Simulator::cScenarioData*, int, int, int), Args(ScenarioMode.GetData(), 2, 0, lastAct));
+			ScenarioMode.GetPlayMode()->SetCurrentAct(lastAct);
+		}
+		MessageManager.PostMSG(id("EndCheckpointProc"), nullptr);
+	}
+
+};
+
 void Dispose()
 {
 	// This method is called when the game is closing
@@ -157,6 +174,7 @@ void Dispose()
 void AttachDetours()
 {
 //	ScenarioRewardScreen_detour::attach(Address(ModAPI::ChooseAddress(0xf18c40,0xf18850)));
+	cScenarioPlayMode_Initialize_detour::attach(Address(ModAPI::ChooseAddress(0xf1f450, 0xf1f060)));
 	UILayoutLoad_detour::attach(GetAddress(UTFWin::UILayout,Load));
 //	HandleUIMessage_Detour::attach(GetAddress(UTFWin::IWinProc, HandleUIMessage));
 	// Call the attach() method on any detours you want to add
