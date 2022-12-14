@@ -1,21 +1,33 @@
 AdventureCheckp
-AdventureChe
+animations~	0x0
+names
+AdventureResultsScreen~ 0x3098258b
 layouts_atlas~	0x40464200
-Adventure
 AdventureCheckpoin
+CheckpointButtonUI
 Ad
+Af
 Adve
+ExpansionPack1
+Afd
 AdventureCheckpoints
-Adv
-AdventureChec
 Adven
-A
-AdventureCheckpoint
 Advent
 AdventureCh
 AdventureCheck
-Adventu
+en-us
 AdventureCheckpoi
-AdventureC
 AdventureCheckpo
+AdventureChe
+Adventure
+CheckpointButton
+Adv
+AdventureChec
+A
+AdventureCheckpoint
+Adventu
+fi-fi
+AdventureC
+locale~	0x2fabf01
 Adventur
+sporemaster

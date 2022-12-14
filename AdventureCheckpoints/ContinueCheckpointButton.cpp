@@ -44,23 +44,67 @@ int ContinueCheckpointButton::GetEventFlags() const
 // checking what kind of message was sent...
 bool ContinueCheckpointButton::HandleUIMessage(IWindow* window, const Message& message)
 {
-	if (message.IsType(kMsgButtonClick)) {
-		if (message.source->GetControlID() == 0x3DAF6E43)
-		{
-			App::ConsolePrintF("Restarting from the current act...");
+	
+	/*if (message.IsSource(WindowManager.GetMainWindow()->FindWindowByID(0x07C796D0)->FindWindowByID(0x07C79940)) && !message.IsType(0x1001)) {
+	//	App::ConsolePrintF("0x%x", message.eventType);
+	}*/
+	
+	
+	// */
+	if (message.IsType(kMsgMouseUp))
+	{
+		App::ConsolePrintF("Button hit. Something should happen.");
+	//	App::ConsolePrintF("Restarting from the current act...");
 			
-			auto act = ScenarioMode.GetPlayMode()->mCurrentActIndex;
+	//	auto act = ScenarioMode.GetPlayMode()->mCurrentActIndex;
+		IWindowPtr MainWindow = WindowManager.GetMainWindow();
+		IWindowPtr RestartButton = WindowManager.GetMainWindow()->FindWindowByID(0x07C79940);
+		
+		Message msg = message;
 
-			IWindow* RestartButton = WindowManager.GetMainWindow()->FindWindowByID(0x07737870);
+		msg.source = RestartButton.get();
 
-			WindowManager.SendMsg(window,RestartButton,message,false);
+	//	msg.Mouse.mouseX = 640;
+		
+		bool ret = false;
+		/*
 
-			GoToAct::SetNewAct(act,0);
+		if (RestartButton->GetParent() != nullptr) {
+			
+			IWindowPtr rewardScreen = RestartButton->GetParent();
+			
+			if (rewardScreen->GetParent() != nullptr) {
 
-			// We did handled the message, return true
-			return true;
+				IWindowPtr rewardScreenParent = rewardScreen->GetParent();
+				ret = rewardScreenParent->SendMsg(msg);
+				//	std::async(std::launch::async, [&] {StartFromCheckpoint(ScenarioMode.GetPlayMode()->mCurrentActIndex); });
+
+
+				//	MessageManager.PostMSG(id("StartCheckpointProc"),nullptr);
+
+
+				//	ScenarioMode.GetPlayMode()->SetCurrentAct(act-1);
+			}
+			else return false;
+			
+
 		}
+		else return false;
+		
+		*/
+	
+
+		
+
+		// We did handled the message, return true
+		return ret;
 	}
+//	*/
 	// Return true if the message was handled, and therefore no other window procedure should receive it.
 	return false;
 }
+
+void ContinueCheckpointButton::SendAsyncMessage(IWindow* pSource, IWindow* pDest, const Message& message, bool inheritable) {
+	WindowManager.SendMsg(pSource, pDest, message, inheritable);
+}
+

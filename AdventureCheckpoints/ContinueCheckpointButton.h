@@ -24,5 +24,6 @@ public:
 	int GetEventFlags() const override;
 	// This is the function you have to implement, called when a window you added this winproc to received an event
 	bool HandleUIMessage(IWindow* pWindow, const Message& message) override;
+	void SendAsyncMessage(IWindow* pSource, IWindow* pDest, const Message& message, bool inheritable);
 	
 };

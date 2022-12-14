@@ -25,6 +25,12 @@
     <ClInclude Include="ContinueCheckpointButton.h">
       <Filter>AdventureCheckpoints</Filter>
     </ClInclude>
+    <ClInclude Include="AdventureEndScreenListener.h">
+      <Filter>AdventureCheckpoints</Filter>
+    </ClInclude>
+    <ClInclude Include="ScenarioRewardScreen.h">
+      <Filter>AdventureCheckpoints</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -37,6 +43,9 @@
       <Filter>AdventureCheckpoints</Filter>
     </ClCompile>
     <ClCompile Include="ContinueCheckpointButton.cpp">
+      <Filter>AdventureCheckpoints</Filter>
+    </ClCompile>
+    <ClCompile Include="AdventureEndScreenListener.cpp">
       <Filter>AdventureCheckpoints</Filter>
     </ClCompile>
   </ItemGroup>
