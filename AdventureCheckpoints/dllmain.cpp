@@ -5,6 +5,7 @@
 #include "AdventureEndScreenListener.h"
 #include "ContinueCheckpointButton.h"
 
+AdventureEndScreenListenerPtr screenListener = nullptr;
 
 
 void Initialize()
@@ -17,7 +18,11 @@ void Initialize()
 	//  - Add new space tools
 	//  - Change materials
 	CheatManager.AddCheat("GoToAct", new GoToAct());
-	MessageManager.AddUnmanagedListener(new AdventureEndScreenListener(),id("StartCheckpointProc"));
+
+	screenListener = new AdventureEndScreenListener();
+
+	MessageManager.AddUnmanagedListener(screenListener.get(), id("StartCheckpointProc"));
+	MessageManager.AddUnmanagedListener(screenListener.get(), id("EndCheckpointProc"));
 }
 
 /* 
@@ -140,8 +145,13 @@ member_detour(UILayoutLoad_detour, UILayout, bool(const ResourceKey&, bool, uint
 void Dispose()
 {
 	// This method is called when the game is closing
+	// 
+	// Button pointers
 	Button = nullptr;
 	Button2 = nullptr;
+
+	// Message listener
+	screenListener = nullptr;
 }
 
 void AttachDetours()
