@@ -147,12 +147,31 @@ member_detour(cScenarioPlayMode_Initialize_detour, Simulator::cScenarioPlayMode,
 	void detoured()
 	{
 		original_function(this);
-		if (screenListener->IsCheckpointActivated()) 
+		if (screenListener->IsCheckpointActivated() && screenListener->GetStoredAdventureIndex() != 0)
 		{
 			int lastAct = screenListener->GetStoredAdventureIndex();
+			int previousAct = lastAct-1;
+
 			//	CALL(Address(ModAPI::ChooseAddress(0xf1f7b0, 0xf1f3c0)), void, Args(Simulator::cScenarioPlayMode*, int), Args(ScenarioMode.GetPlayMode(), lastAct));
 			CALL(Address(0xF462B0), void, Args(Simulator::cScenarioData*, int, int, int), Args(ScenarioMode.GetData(), 2, 0, lastAct));
 			ScenarioMode.GetPlayMode()->SetCurrentAct(lastAct);
+
+			Simulator::cScenarioAct& previousActClass = ScenarioMode.GetResource()->mActs[previousAct];
+			Simulator::cScenarioGoal& goal = previousActClass.mGoals[previousActClass.mGoals.size()-1];
+			
+			Simulator::cScenarioMarker destination;
+			eastl::vector_map<int, Simulator::cScenarioMarker>& markers = ScenarioMode.GetResource()->mMarkers;
+			
+			for (auto& marker : markers) 
+			{
+				if (marker.second.mClassIndex == goal.mTargetClassIndex)
+				{
+					destination = marker.second;
+					break;
+				}
+			}
+			if (destination.mPosition != Vector3(0,0,0) && destination.mOrientation != Quaternion(0,0,0,1))
+			GameNounManager.GetAvatar()->Teleport(destination.mPosition,destination.mOrientation);
 		}
 		MessageManager.PostMSG(id("EndCheckpointProc"), nullptr);
 	}
