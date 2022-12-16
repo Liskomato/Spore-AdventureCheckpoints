@@ -51,7 +51,7 @@ bool ContinueCheckpointButton::HandleUIMessage(IWindow* window, const Message& m
 	//	App::ConsolePrintF("Restarting from the current act...");
 	
 	//	Send message to the listener knowing that the checkpoint button was pressed.
-		MessageManager.PostMSG(id("StartCheckpointProc"),nullptr);
+		MessageManager.MessageSend(id("StartCheckpointProc"),nullptr);
 
 		
 

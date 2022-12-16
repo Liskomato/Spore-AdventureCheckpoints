@@ -173,7 +173,7 @@ member_detour(cScenarioPlayMode_Initialize_detour, Simulator::cScenarioPlayMode,
 			if (destination.mPosition != Vector3(0,0,0) && destination.mOrientation != Quaternion(0,0,0,1))
 			GameNounManager.GetAvatar()->Teleport(destination.mPosition,destination.mOrientation);
 		}
-		MessageManager.PostMSG(id("EndCheckpointProc"), nullptr);
+		MessageManager.MessageSend(id("EndCheckpointProc"), nullptr);
 	}
 
 };
