@@ -149,6 +149,10 @@ member_detour(cScenarioPlayMode_Initialize_detour, Simulator::cScenarioPlayMode,
 		original_function(this);
 		if (screenListener->IsCheckpointActivated() && screenListener->GetStoredAdventureIndex() != 0)
 		{
+
+			ScenarioMode.GetPlayMode()->mSummary = screenListener->RestoreSummary();
+			ScenarioMode.GetPlayMode()->field_98 = screenListener->RestoreTime();
+
 			int lastAct = screenListener->GetStoredAdventureIndex();
 			int previousAct = lastAct-1;
 

@@ -8,6 +8,8 @@ AdventureEndScreenListener::AdventureEndScreenListener()
 {
 	checkpointEnabled = false;
 	storedActIndex = 0;
+	storedSummary = Simulator::cScenarioPlaySummary();
+	storedTime = Clock();
 }
 
 
@@ -37,11 +39,16 @@ bool AdventureEndScreenListener::HandleMessage(uint32_t messageID, void* message
 
 		checkpointEnabled = true;
 		storedActIndex = ScenarioMode.GetPlayMode()->mCurrentActIndex;
+		storedSummary = ScenarioMode.GetPlayMode()->mSummary;
+		storedTime = ScenarioMode.GetPlayMode()->field_98;
 	}
 	else if (messageID == id("EndCheckpointProc"))
 	{
 		checkpointEnabled = false;
 		storedActIndex = 0;
+
+		storedSummary = Simulator::cScenarioPlaySummary();
+		storedTime = Clock();
 	}
 	// Return true if the message has been handled. Other listeners will receive the message regardless of the return value.
 	return true;
@@ -59,4 +66,12 @@ bool AdventureEndScreenListener::IsCheckpointActivated() {
 
 int AdventureEndScreenListener::GetStoredAdventureIndex() {
 	return storedActIndex;
+}
+
+Clock AdventureEndScreenListener::RestoreTime() {
+	return storedTime;
+}
+
+Simulator::cScenarioPlaySummary AdventureEndScreenListener::RestoreSummary() {
+	return storedSummary;
 }

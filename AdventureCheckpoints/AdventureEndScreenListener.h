@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Spore\BasicIncludes.h>
+#include <Spore\Simulator\cScenarioPlayMode.h>
 
 #define AdventureEndScreenListenerPtr intrusive_ptr<AdventureEndScreenListener>
 
@@ -22,7 +23,11 @@ public:
 	void StartFromCheckpoint(int previousAct);
 	bool IsCheckpointActivated();
 	int GetStoredAdventureIndex();
+	Clock RestoreTime();
+	Simulator::cScenarioPlaySummary RestoreSummary();
 private:
 	bool checkpointEnabled;
 	int storedActIndex;
+	Clock storedTime;
+	Simulator::cScenarioPlaySummary storedSummary;
 };
