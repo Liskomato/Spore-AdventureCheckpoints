@@ -156,8 +156,12 @@ member_detour(cScenarioPlayMode_Initialize_detour, Simulator::cScenarioPlayMode,
 			int lastAct = screenListener->GetStoredAdventureIndex();
 			int previousAct = lastAct-1;
 
-			//	CALL(Address(ModAPI::ChooseAddress(0xf1f7b0, 0xf1f3c0)), void, Args(Simulator::cScenarioPlayMode*, int), Args(ScenarioMode.GetPlayMode(), lastAct));
-			CALL(Address(0xF462B0), void, Args(Simulator::cScenarioData*, int, int, int), Args(ScenarioMode.GetData(), 2, 0, lastAct));
+			/// Methodology 1: Call method 0xf1f7b0
+			ScenarioMode.GetPlayMode()->field_90 = 3;
+			CALL(Address(ModAPI::ChooseAddress(0xf1f7b0, 0xf1f3c0)), void, Args(Simulator::cScenarioPlayMode*, int), Args(ScenarioMode.GetPlayMode(), lastAct));
+
+			/// Methodology 2: Call method 0xf462b0 and teleport the captain.
+		/*	CALL(Address(0xF462B0), void, Args(Simulator::cScenarioData*, int, int, int), Args(ScenarioMode.GetData(), 2, 0, lastAct));
 			ScenarioMode.GetPlayMode()->SetCurrentAct(lastAct);
 
 			Simulator::cScenarioAct& previousActClass = ScenarioMode.GetResource()->mActs[previousAct];
@@ -175,7 +179,7 @@ member_detour(cScenarioPlayMode_Initialize_detour, Simulator::cScenarioPlayMode,
 				}
 			}
 			if (destination.mPosition != Vector3(0,0,0) && destination.mOrientation != Quaternion(0,0,0,1))
-			GameNounManager.GetAvatar()->Teleport(destination.mPosition,destination.mOrientation);
+			GameNounManager.GetAvatar()->Teleport(destination.mPosition,destination.mOrientation);*/
 		}
 		MessageManager.MessageSend(id("EndCheckpointProc"), nullptr);
 	}
