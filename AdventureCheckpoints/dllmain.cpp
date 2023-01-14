@@ -151,7 +151,7 @@ member_detour(cScenarioPlayMode_Initialize_detour, Simulator::cScenarioPlayMode,
 		{
 
 			ScenarioMode.GetPlayMode()->mSummary = screenListener->RestoreSummary();
-			ScenarioMode.GetPlayMode()->field_98 = screenListener->RestoreTime();
+			
 
 			int lastAct = screenListener->GetStoredAdventureIndex();
 			int previousAct = lastAct-1;
@@ -181,9 +181,24 @@ member_detour(cScenarioPlayMode_Initialize_detour, Simulator::cScenarioPlayMode,
 			if (destination.mPosition != Vector3(0,0,0) && destination.mOrientation != Quaternion(0,0,0,1))
 			GameNounManager.GetAvatar()->Teleport(destination.mPosition,destination.mOrientation);*/
 		}
-		MessageManager.MessageSend(id("EndCheckpointProc"), nullptr);
-	}
+		else {
+			MessageManager.MessageSend(id("EndCheckpointProc"), nullptr);
+		}
+		}
 
+};
+
+member_detour(GameTimeManager_Resume_detour, Simulator::cGameTimeManager, int(Simulator::TimeManagerPause)) 
+{
+	int detoured(Simulator::TimeManagerPause pauseType) {
+
+		if (pauseType == Simulator::TimeManagerPause::CinematicAll && screenListener->IsCheckpointActivated()) 
+		{
+			ScenarioMode.GetPlayMode()->field_98 = screenListener->RestoreTime();
+			MessageManager.MessageSend(id("EndCheckpointProc"), nullptr);
+		}
+		return original_function(this,pauseType);
+	}
 };
 
 void Dispose()
@@ -200,10 +215,16 @@ void Dispose()
 
 void AttachDetours()
 {
-//	ScenarioRewardScreen_detour::attach(Address(ModAPI::ChooseAddress(0xf18c40,0xf18850)));
+
 	cScenarioPlayMode_Initialize_detour::attach(Address(ModAPI::ChooseAddress(0xf1f450, 0xf1f060)));
 	UILayoutLoad_detour::attach(GetAddress(UTFWin::UILayout,Load));
-//	HandleUIMessage_Detour::attach(GetAddress(UTFWin::IWinProc, HandleUIMessage));
+	GameTimeManager_Resume_detour::attach(GetAddress(Simulator::cGameTimeManager, Resume));
+
+	/// Unused detours
+	//	ScenarioRewardScreen_detour::attach(Address(ModAPI::ChooseAddress(0xf18c40,0xf18850)));
+	//	HandleUIMessage_Detour::attach(GetAddress(UTFWin::IWinProc, HandleUIMessage));
+
+
 	// Call the attach() method on any detours you want to add
 	// For example: cViewer_SetRenderType_detour::attach(GetAddress(cViewer, SetRenderType));
 }

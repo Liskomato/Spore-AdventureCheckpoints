@@ -4,6 +4,8 @@
 #include <chrono>
 #include <thread>
 
+// Listener class functions
+
 AdventureEndScreenListener::AdventureEndScreenListener()
 {
 	checkpointEnabled = false;
@@ -41,14 +43,15 @@ bool AdventureEndScreenListener::HandleMessage(uint32_t messageID, void* message
 		storedActIndex = ScenarioMode.GetPlayMode()->mCurrentActIndex;
 		storedSummary = ScenarioMode.GetPlayMode()->mSummary;
 		storedTime = ScenarioMode.GetPlayMode()->field_98;
+
 	}
 	else if (messageID == id("EndCheckpointProc"))
 	{
 		checkpointEnabled = false;
 		storedActIndex = 0;
-
 		storedSummary = Simulator::cScenarioPlaySummary();
 		storedTime = Clock();
+		
 	}
 	// Return true if the message has been handled. Other listeners will receive the message regardless of the return value.
 	return true;
@@ -69,9 +72,36 @@ int AdventureEndScreenListener::GetStoredAdventureIndex() {
 }
 
 Clock AdventureEndScreenListener::RestoreTime() {
+	
+	ClockExt& ext = (ClockExt&)storedTime;
+	
+	ext.SetStartTime(ext.GetAccumulatedTime());
+
 	return storedTime;
 }
 
 Simulator::cScenarioPlaySummary AdventureEndScreenListener::RestoreSummary() {
 	return storedSummary;
+}
+
+// class ClockExt functions
+
+LARGE_INTEGER ClockExt::GetStartTime() 
+{
+	return mStartTime;
+}
+
+LARGE_INTEGER ClockExt::GetAccumulatedTime()
+{
+	return mAccumulatedTime;
+}
+
+void ClockExt::SetStartTime(LARGE_INTEGER time) 
+{
+	mStartTime = time;
+}
+
+void ClockExt::SetAccumulatedTime(LARGE_INTEGER time) 
+{
+	mAccumulatedTime = time;
 }
