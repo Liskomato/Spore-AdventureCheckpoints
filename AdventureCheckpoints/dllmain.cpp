@@ -23,6 +23,7 @@ void Initialize()
 
 	MessageManager.AddUnmanagedListener(screenListener.get(), id("StartCheckpointProc"));
 	MessageManager.AddUnmanagedListener(screenListener.get(), id("EndCheckpointProc"));
+	MessageManager.AddUnmanagedListener(screenListener.get(), id("TimeRestored"));
 }
 
 /* 
@@ -181,10 +182,9 @@ member_detour(cScenarioPlayMode_Initialize_detour, Simulator::cScenarioPlayMode,
 			if (destination.mPosition != Vector3(0,0,0) && destination.mOrientation != Quaternion(0,0,0,1))
 			GameNounManager.GetAvatar()->Teleport(destination.mPosition,destination.mOrientation);*/
 		}
-		else {
 			MessageManager.MessageSend(id("EndCheckpointProc"), nullptr);
-		}
-		}
+		
+	}
 
 };
 
@@ -195,11 +195,22 @@ member_detour(GameTimeManager_Resume_detour, Simulator::cGameTimeManager, int(Si
 		if (pauseType == Simulator::TimeManagerPause::CinematicAll && screenListener->IsCheckpointActivated()) 
 		{
 			ScenarioMode.GetPlayMode()->field_98 = screenListener->RestoreTime();
-			MessageManager.MessageSend(id("EndCheckpointProc"), nullptr);
+			MessageManager.MessageSend(id("TimeRestored"), nullptr);
 		}
 		return original_function(this,pauseType);
 	}
 };
+
+member_detour(Clock_Stop_detour, Clock, void(void))
+{
+	void detoured() {
+		if (this->GetElapsed() == ScenarioMode.GetPlayMode()->field_98.GetElapsed()) {
+			screenListener->SetClock(ScenarioMode.GetPlayMode()->field_98);
+		}
+		original_function(this);
+	}
+};
+
 
 void Dispose()
 {
@@ -219,6 +230,7 @@ void AttachDetours()
 	cScenarioPlayMode_Initialize_detour::attach(Address(ModAPI::ChooseAddress(0xf1f450, 0xf1f060)));
 	UILayoutLoad_detour::attach(GetAddress(UTFWin::UILayout,Load));
 	GameTimeManager_Resume_detour::attach(GetAddress(Simulator::cGameTimeManager, Resume));
+	Clock_Stop_detour::attach(GetAddress(Clock, Stop));
 
 	/// Unused detours
 	//	ScenarioRewardScreen_detour::attach(Address(ModAPI::ChooseAddress(0xf18c40,0xf18850)));

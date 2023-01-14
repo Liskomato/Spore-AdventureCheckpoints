@@ -25,6 +25,8 @@ public:
 	int GetStoredAdventureIndex();
 	Clock RestoreTime();
 	Simulator::cScenarioPlaySummary RestoreSummary();
+	void SetClock(Clock clock);
+
 private:
 	bool checkpointEnabled;
 	int storedActIndex;

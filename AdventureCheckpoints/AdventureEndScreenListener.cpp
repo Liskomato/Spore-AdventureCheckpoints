@@ -47,11 +47,16 @@ bool AdventureEndScreenListener::HandleMessage(uint32_t messageID, void* message
 	}
 	else if (messageID == id("EndCheckpointProc"))
 	{
-		checkpointEnabled = false;
+	//	checkpointEnabled = false;
 		storedActIndex = 0;
 		storedSummary = Simulator::cScenarioPlaySummary();
-		storedTime = Clock();
 		
+	}
+	else if (messageID == id("TimeRestored"))
+	{
+		checkpointEnabled = false;
+		storedTime = Clock();
+
 	}
 	// Return true if the message has been handled. Other listeners will receive the message regardless of the return value.
 	return true;
@@ -82,6 +87,15 @@ Clock AdventureEndScreenListener::RestoreTime() {
 
 Simulator::cScenarioPlaySummary AdventureEndScreenListener::RestoreSummary() {
 	return storedSummary;
+}
+
+void AdventureEndScreenListener::SetClock(Clock clock) {
+	
+	if (clock.IsRunning()) {
+		clock.Pause();
+	}
+	
+	storedTime = clock;
 }
 
 // class ClockExt functions
