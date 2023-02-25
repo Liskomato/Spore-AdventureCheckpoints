@@ -204,7 +204,7 @@ member_detour(GameTimeManager_Resume_detour, Simulator::cGameTimeManager, int(Si
 member_detour(Clock_Stop_detour, Clock, void(void))
 {
 	void detoured() {
-		if (this->GetElapsed() == ScenarioMode.GetPlayMode()->field_98.GetElapsed()) {
+		if (Simulator::IsScenarioMode() && this->GetElapsed() == ScenarioMode.GetPlayMode()->field_98.GetElapsed()) {
 			screenListener->SetClock(ScenarioMode.GetPlayMode()->field_98);
 		}
 		original_function(this);
@@ -230,7 +230,7 @@ void AttachDetours()
 	cScenarioPlayMode_Initialize_detour::attach(Address(ModAPI::ChooseAddress(0xf1f450, 0xf1f060)));
 	UILayoutLoad_detour::attach(GetAddress(UTFWin::UILayout,Load));
 	GameTimeManager_Resume_detour::attach(GetAddress(Simulator::cGameTimeManager, Resume));
-	Clock_Stop_detour::attach(GetAddress(Clock, Stop));
+	Clock_Stop_detour::attach(GetAddress(Clock, Pause));
 
 	/// Unused detours
 	//	ScenarioRewardScreen_detour::attach(Address(ModAPI::ChooseAddress(0xf18c40,0xf18850)));
