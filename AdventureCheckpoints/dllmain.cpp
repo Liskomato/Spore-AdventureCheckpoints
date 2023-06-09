@@ -23,7 +23,6 @@ void Initialize()
 
 	MessageManager.AddUnmanagedListener(screenListener.get(), id("StartCheckpointProc"));
 	MessageManager.AddUnmanagedListener(screenListener.get(), id("EndCheckpointProc"));
-	MessageManager.AddUnmanagedListener(screenListener.get(), id("TimeRestored"));
 }
 
 /* 
@@ -63,10 +62,8 @@ member_detour(UILayoutLoad_detour, UILayout, bool(const ResourceKey&, bool, uint
 
 	bool detoured(const ResourceKey & resourceKey, bool boolean, uint32_t parameter) {
 
-		// Original function gets called first.
 		bool func = original_function(this, resourceKey, boolean, parameter);
 		
-		// Checkpoint buttons are loaded with this instance ID.
 		if (resourceKey.instanceID == 0x3098258b) {
 
 	//		IWindowPtr parentWindow = this->GetContainerWindow();
@@ -139,10 +136,6 @@ member_detour(UILayoutLoad_detour, UILayout, bool(const ResourceKey&, bool, uint
 	//		parentWindow->FindWindowByID(0x07C79820)->BringToFront(parent2.get());
 
 		}
-		// Text layout
-		if (resourceKey.instanceID == 0x0) {
-
-		}
 
 		return func;
 	}
@@ -158,7 +151,7 @@ member_detour(cScenarioPlayMode_Initialize_detour, Simulator::cScenarioPlayMode,
 		{
 
 			ScenarioMode.GetPlayMode()->mSummary = screenListener->RestoreSummary();
-			
+			ScenarioMode.GetPlayMode()->field_98 = screenListener->RestoreTime();
 
 			int lastAct = screenListener->GetStoredAdventureIndex();
 			int previousAct = lastAct-1;
@@ -188,44 +181,18 @@ member_detour(cScenarioPlayMode_Initialize_detour, Simulator::cScenarioPlayMode,
 			if (destination.mPosition != Vector3(0,0,0) && destination.mOrientation != Quaternion(0,0,0,1))
 			GameNounManager.GetAvatar()->Teleport(destination.mPosition,destination.mOrientation);*/
 		}
-			MessageManager.MessageSend(id("EndCheckpointProc"), nullptr);
-		
+		MessageManager.MessageSend(id("EndCheckpointProc"), nullptr);
 	}
 
 };
-
-member_detour(GameTimeManager_Resume_detour, Simulator::cGameTimeManager, int(Simulator::TimeManagerPause)) 
-{
-	int detoured(Simulator::TimeManagerPause pauseType) {
-
-		if (pauseType == Simulator::TimeManagerPause::CinematicAll && screenListener->IsCheckpointActivated()) 
-		{
-			ScenarioMode.GetPlayMode()->field_98 = screenListener->RestoreTime();
-			MessageManager.MessageSend(id("TimeRestored"), nullptr);
-		}
-		return original_function(this,pauseType);
-	}
-};
-
-member_detour(Clock_Stop_detour, Clock, void(void))
-{
-	void detoured() {
-		if (Simulator::IsScenarioMode() && this->GetElapsed() == ScenarioMode.GetPlayMode()->field_98.GetElapsed()) {
-			screenListener->SetClock(ScenarioMode.GetPlayMode()->field_98);
-		}
-		original_function(this);
-	}
-};
-
 
 void Dispose()
 {
 	// This method is called when the game is closing
 	// 
-	// UILayout pointers
+	// Button pointers
 	Button = nullptr;
 	Button2 = nullptr;
-	Text1 = nullptr;
 
 	// Message listener
 	screenListener = nullptr;
@@ -233,17 +200,10 @@ void Dispose()
 
 void AttachDetours()
 {
-
+//	ScenarioRewardScreen_detour::attach(Address(ModAPI::ChooseAddress(0xf18c40,0xf18850)));
 	cScenarioPlayMode_Initialize_detour::attach(Address(ModAPI::ChooseAddress(0xf1f450, 0xf1f060)));
 	UILayoutLoad_detour::attach(GetAddress(UTFWin::UILayout,Load));
-	GameTimeManager_Resume_detour::attach(GetAddress(Simulator::cGameTimeManager, Resume));
-	Clock_Stop_detour::attach(GetAddress(Clock, Pause));
-
-	/// Unused detours
-	//	ScenarioRewardScreen_detour::attach(Address(ModAPI::ChooseAddress(0xf18c40,0xf18850)));
-	//	HandleUIMessage_Detour::attach(GetAddress(UTFWin::IWinProc, HandleUIMessage));
-
-
+//	HandleUIMessage_Detour::attach(GetAddress(UTFWin::IWinProc, HandleUIMessage));
 	// Call the attach() method on any detours you want to add
 	// For example: cViewer_SetRenderType_detour::attach(GetAddress(cViewer, SetRenderType));
 }

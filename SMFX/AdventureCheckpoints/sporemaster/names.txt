@@ -26,7 +26,6 @@ AdventureChec
 A
 AdventureCheckpoint
 Adventu
-Timer
 fi-fi
 AdventureC
 locale~	0x2fabf01
