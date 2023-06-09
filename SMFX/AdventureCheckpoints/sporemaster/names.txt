@@ -3,6 +3,7 @@ animations~	0x0
 names
 AdventureResultsScreen~ 0x3098258b
 layouts_atlas~	0x40464200
+ScenarioMissionCard
 AdventureCheckpoin
 CheckpointButtonUI
 Ad
@@ -15,6 +16,7 @@ Adven
 Advent
 AdventureCh
 AdventureCheck
+Text
 en-us
 AdventureCheckpoi
 AdventureCheckpo

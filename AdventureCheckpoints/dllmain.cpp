@@ -140,7 +140,16 @@ member_detour(UILayoutLoad_detour, UILayout, bool(const ResourceKey&, bool, uint
 
 		}
 		// Text layout
-		if (resourceKey.instanceID == 0x0) {
+		if (resourceKey.instanceID == 0xf8d70d51) {
+			Text1 = new UILayout();
+			if (Text1->LoadByName(u"Timer")) {
+				Text1->SetParentWindow(this->FindWindowByID(0x055EBC68));
+			}
+			IWindowPtr text;
+			if (Text1->FindWindowByID(id("Text")) != nullptr) {
+				text = Text1->FindWindowByID(id("Text"));
+				text->SetLocation(10, 300);
+			}
 
 		}
 
