@@ -63,8 +63,10 @@ member_detour(UILayoutLoad_detour, UILayout, bool(const ResourceKey&, bool, uint
 
 	bool detoured(const ResourceKey & resourceKey, bool boolean, uint32_t parameter) {
 
+		// Original function gets called first.
 		bool func = original_function(this, resourceKey, boolean, parameter);
 		
+		// Checkpoint buttons are loaded with this instance ID.
 		if (resourceKey.instanceID == 0x3098258b) {
 
 	//		IWindowPtr parentWindow = this->GetContainerWindow();
@@ -135,6 +137,10 @@ member_detour(UILayoutLoad_detour, UILayout, bool(const ResourceKey&, bool, uint
 
 	//		parentWindow->FindWindowByID(0x07C796D0)->BringToFront(parent1.get());
 	//		parentWindow->FindWindowByID(0x07C79820)->BringToFront(parent2.get());
+
+		}
+		// Text layout
+		if (resourceKey.instanceID == 0x0) {
 
 		}
 
@@ -216,9 +222,10 @@ void Dispose()
 {
 	// This method is called when the game is closing
 	// 
-	// Button pointers
+	// UILayout pointers
 	Button = nullptr;
 	Button2 = nullptr;
+	Text1 = nullptr;
 
 	// Message listener
 	screenListener = nullptr;
