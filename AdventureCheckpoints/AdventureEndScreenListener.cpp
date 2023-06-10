@@ -42,7 +42,7 @@ bool AdventureEndScreenListener::HandleMessage(uint32_t messageID, void* message
 		checkpointEnabled = true;
 		storedActIndex = ScenarioMode.GetPlayMode()->mCurrentActIndex;
 		storedSummary = ScenarioMode.GetPlayMode()->mSummary;
-		storedTime = ScenarioMode.GetPlayMode()->field_98;
+	//	storedTime = ScenarioMode.GetPlayMode()->field_98;
 
 	}
 	else if (messageID == id("EndCheckpointProc"))
@@ -50,6 +50,7 @@ bool AdventureEndScreenListener::HandleMessage(uint32_t messageID, void* message
 	//	checkpointEnabled = false;
 		storedActIndex = 0;
 		storedSummary = Simulator::cScenarioPlaySummary();
+	//	storedTime = Clock();
 		
 	}
 	else if (messageID == id("TimeRestored"))

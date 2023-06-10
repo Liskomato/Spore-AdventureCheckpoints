@@ -172,6 +172,7 @@ member_detour(cScenarioPlayMode_Initialize_detour, Simulator::cScenarioPlayMode,
 
 			ScenarioMode.GetPlayMode()->mSummary = screenListener->RestoreSummary();
 			
+			ScenarioMode.GetPlayMode()->field_98 = screenListener->RestoreTime();
 
 			int lastAct = screenListener->GetStoredAdventureIndex();
 			int previousAct = lastAct-1;
@@ -202,6 +203,7 @@ member_detour(cScenarioPlayMode_Initialize_detour, Simulator::cScenarioPlayMode,
 			GameNounManager.GetAvatar()->Teleport(destination.mPosition,destination.mOrientation);*/
 		}
 			MessageManager.MessageSend(id("EndCheckpointProc"), nullptr);
+			MessageManager.MessageSend(id("TimeRestored"), nullptr);
 		
 	}
 
@@ -211,11 +213,11 @@ member_detour(GameTimeManager_Resume_detour, Simulator::cGameTimeManager, int(Si
 {
 	int detoured(Simulator::TimeManagerPause pauseType) {
 
-		if (pauseType == Simulator::TimeManagerPause::CinematicAll && screenListener->IsCheckpointActivated()) 
+		/*if (pauseType == Simulator::TimeManagerPause::CinematicAll && screenListener->IsCheckpointActivated())
 		{
 			ScenarioMode.GetPlayMode()->field_98 = screenListener->RestoreTime();
 			MessageManager.MessageSend(id("TimeRestored"), nullptr);
-		}
+		}*/
 		return original_function(this,pauseType);
 	}
 };
