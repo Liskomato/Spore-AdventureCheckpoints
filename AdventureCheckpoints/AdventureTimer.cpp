@@ -29,8 +29,8 @@ void AdventureTimer::Update()
 		&& WindowManager.GetMainWindow()->FindWindowByID(0x055EBC68) != nullptr)
 	{
 		IWindowPtr anchor = WindowManager.GetMainWindow()->FindWindowByID(0x055EBC68);
-		if (anchor->FindWindowByID(id("Timer")) != nullptr) {
-			IWindowPtr timer = anchor->FindWindowByID(id("Timer"));
+		if (anchor->FindWindowByID(id("Text")) != nullptr) {
+			IWindowPtr timer = anchor->FindWindowByID(id("Text"));
 			string16 timestr;
 			timestr.assign_convert(to_string(ScenarioMode.GetPlayMode()->field_98.GetElapsedTime()));
 			timer->SetCaption(timestr.c_str());
