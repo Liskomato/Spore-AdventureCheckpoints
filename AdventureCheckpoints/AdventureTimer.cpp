@@ -42,6 +42,11 @@ void AdventureTimer::Update()
 				timestr += u"\nTime: " + clock;
 			}
 
+			string16 scenariotime;
+			scenariotime.assign_convert(to_string(ScenarioMode.GetPlayMode()->field_C0));
+
+			timestr += u"\nfield_C0: " + scenariotime;
+
 			timer->SetCaption(timestr.c_str());
 
 		}
