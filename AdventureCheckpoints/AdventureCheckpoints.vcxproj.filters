@@ -31,6 +31,9 @@
     <ClInclude Include="ScenarioRewardScreen.h">
       <Filter>AdventureCheckpoints</Filter>
     </ClInclude>
+    <ClInclude Include="AdventureTimer.h">
+      <Filter>AdventureCheckpoints</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -46,6 +49,9 @@
       <Filter>AdventureCheckpoints</Filter>
     </ClCompile>
     <ClCompile Include="AdventureEndScreenListener.cpp">
+      <Filter>AdventureCheckpoints</Filter>
+    </ClCompile>
+    <ClCompile Include="AdventureTimer.cpp">
       <Filter>AdventureCheckpoints</Filter>
     </ClCompile>
   </ItemGroup>
