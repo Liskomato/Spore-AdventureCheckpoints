@@ -14,7 +14,7 @@ public:
 	
 	AdventureTimer();
 	~AdventureTimer();
-
+	
 
 	int AddRef() override;
 	int Release() override;

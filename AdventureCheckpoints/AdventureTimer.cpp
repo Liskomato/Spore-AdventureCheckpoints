@@ -35,17 +35,32 @@ void AdventureTimer::Update()
 			timestr.assign_convert(to_string(ScenarioMode.GetPlayMode()->field_98.GetElapsedTime()));
 			timestr = u"field_98: " + timestr;
 			
-
-			if (WindowManager.GetMainWindow()->FindWindowByID(0x07c79d98) != nullptr) {
-				IWindowPtr timer_2 = WindowManager.GetMainWindow()->FindWindowByID(0x07c79d98);
-				string16 clock = timer_2->GetCaption();
-				timestr += u"\nTime: " + clock;
-			}
+			// time is in milliseconds (ms)
+			int time = ScenarioMode.GetPlayMode()->field_C0;
 
 			string16 scenariotime;
-			scenariotime.assign_convert(to_string(ScenarioMode.GetPlayMode()->field_C0));
+			scenariotime.assign_convert(to_string(time));
 
 			timestr += u"\nfield_C0: " + scenariotime;
+
+			int hours, minutes, seconds, milliseconds;
+			string16 clock;
+
+			milliseconds = time;
+
+			seconds = time / 1000;
+			milliseconds %= 1000;
+			
+			minutes = seconds / 60;
+			seconds %= 60;
+
+			hours = minutes / 60;
+			minutes %= 60;
+
+
+			clock.append_sprintf(u"%02d:%02d:%02d.%03d",hours,minutes,seconds,milliseconds);
+
+			timestr += u"\nTime: " + clock;
 
 			timer->SetCaption(timestr.c_str());
 
