@@ -23,14 +23,14 @@ public:
 	void StartFromCheckpoint(int previousAct);
 	bool IsCheckpointActivated();
 	int GetStoredAdventureIndex();
-	Clock RestoreTime();
+	int RestoreTime();
 	Simulator::cScenarioPlaySummary RestoreSummary();
-	void SetClock(Clock clock);
+//	void SetTime(int time);
 
 private:
 	bool checkpointEnabled;
 	int storedActIndex;
-	Clock storedTime;
+	int storedTime;
 	Simulator::cScenarioPlaySummary storedSummary;
 };
 

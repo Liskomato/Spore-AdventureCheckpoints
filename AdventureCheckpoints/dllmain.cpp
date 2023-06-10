@@ -24,7 +24,7 @@ void Initialize()
 
 	MessageManager.AddUnmanagedListener(screenListener.get(), id("StartCheckpointProc"));
 	MessageManager.AddUnmanagedListener(screenListener.get(), id("EndCheckpointProc"));
-	MessageManager.AddUnmanagedListener(screenListener.get(), id("TimeRestored"));
+//	MessageManager.AddUnmanagedListener(screenListener.get(), id("TimeRestored"));
 
 	// Updater function
 	App::AddUpdateFunction(new AdventureTimer());
@@ -175,19 +175,21 @@ member_detour(cScenarioPlayMode_Initialize_detour, Simulator::cScenarioPlayMode,
 
 			ScenarioMode.GetPlayMode()->mSummary = screenListener->RestoreSummary();
 			
-		//	ScenarioMode.GetPlayMode()->field_98 = screenListener->RestoreTime();
+			ScenarioMode.GetPlayMode()->field_C0 = screenListener->RestoreTime();
 
 			int lastAct = screenListener->GetStoredAdventureIndex();
-			int previousAct = lastAct-1;
 
-			/// Methodology 1: Call method 0xf1f7b0
+			/// Methodology 1: Call method 0xf1f7b0 (Now added to SDK)
 			ScenarioMode.GetPlayMode()->field_90 = 3;
-			CALL(Address(ModAPI::ChooseAddress(0xf1f7b0, 0xf1f3c0)), void, Args(Simulator::cScenarioPlayMode*, int), Args(ScenarioMode.GetPlayMode(), lastAct));
+
+			// CALL(Address(ModAPI::ChooseAddress(0xf1f7b0, 0xf1f3c0)), void, Args(Simulator::cScenarioPlayMode*, int), Args(ScenarioMode.GetPlayMode(), lastAct));
+			ScenarioMode.GetPlayMode()->JumpToAct(lastAct);
 
 			/// Methodology 2: Call method 0xf462b0 and teleport the captain.
 		/*	CALL(Address(0xF462B0), void, Args(Simulator::cScenarioData*, int, int, int), Args(ScenarioMode.GetData(), 2, 0, lastAct));
 			ScenarioMode.GetPlayMode()->SetCurrentAct(lastAct);
 
+			int previousAct = lastAct - 1;
 			Simulator::cScenarioAct& previousActClass = ScenarioMode.GetResource()->mActs[previousAct];
 			Simulator::cScenarioGoal& goal = previousActClass.mGoals[previousActClass.mGoals.size()-1];
 			
@@ -206,7 +208,8 @@ member_detour(cScenarioPlayMode_Initialize_detour, Simulator::cScenarioPlayMode,
 			GameNounManager.GetAvatar()->Teleport(destination.mPosition,destination.mOrientation);*/
 		}
 			MessageManager.MessageSend(id("EndCheckpointProc"), nullptr);
-			MessageManager.MessageSend(id("TimeRestored"), nullptr);
+
+		//	MessageManager.MessageSend(id("TimeRestored"), nullptr);
 		
 	}
 

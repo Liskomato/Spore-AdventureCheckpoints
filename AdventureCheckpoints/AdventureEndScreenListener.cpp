@@ -11,7 +11,7 @@ AdventureEndScreenListener::AdventureEndScreenListener()
 	checkpointEnabled = false;
 	storedActIndex = 0;
 	storedSummary = Simulator::cScenarioPlaySummary();
-	storedTime = Clock();
+	storedTime = 0;
 }
 
 
@@ -42,31 +42,32 @@ bool AdventureEndScreenListener::HandleMessage(uint32_t messageID, void* message
 		checkpointEnabled = true;
 		storedActIndex = ScenarioMode.GetPlayMode()->mCurrentActIndex;
 		storedSummary = ScenarioMode.GetPlayMode()->mSummary;
-	//	storedTime = ScenarioMode.GetPlayMode()->field_98;
+		storedTime = ScenarioMode.GetPlayMode()->field_C0;
 
 	}
 	else if (messageID == id("EndCheckpointProc"))
 	{
-	//	checkpointEnabled = false;
+		checkpointEnabled = false;
 		storedActIndex = 0;
 		storedSummary = Simulator::cScenarioPlaySummary();
-	//	storedTime = Clock();
+		storedTime = 0;
 		
 	}
+	/*	Older attempt
 	else if (messageID == id("TimeRestored"))
 	{
 		checkpointEnabled = false;
-		storedTime = Clock();
+		storedTime = 0;
 
 	}
+	*/
 	// Return true if the message has been handled. Other listeners will receive the message regardless of the return value.
 	return true;
 }
 
 void AdventureEndScreenListener::StartFromCheckpoint(int previousAct) {
 	
-
-//	GoToAct::SetNewAct(previousAct, ScenarioMode.GetPlayMode()->mCurrentActIndex);
+	ScenarioMode.GetPlayMode()->JumpToAct(previousAct);
 }
 
 bool AdventureEndScreenListener::IsCheckpointActivated() {
@@ -77,28 +78,18 @@ int AdventureEndScreenListener::GetStoredAdventureIndex() {
 	return storedActIndex;
 }
 
-Clock AdventureEndScreenListener::RestoreTime() {
-	
-	ClockExt& ext = (ClockExt&)storedTime;
-	
-	ext.SetStartTime(ext.GetAccumulatedTime());
-
+int AdventureEndScreenListener::RestoreTime() {
 	return storedTime;
 }
 
 Simulator::cScenarioPlaySummary AdventureEndScreenListener::RestoreSummary() {
 	return storedSummary;
 }
-
-void AdventureEndScreenListener::SetClock(Clock clock) {
-	
-	if (clock.IsRunning()) {
-		clock.Pause();
-	}
-	
-	storedTime = clock;
+/*
+void AdventureEndScreenListener::SetTime(int time) {
+	storedTime = time;
 }
-
+*/
 // class ClockExt functions
 
 LARGE_INTEGER ClockExt::GetStartTime() 
