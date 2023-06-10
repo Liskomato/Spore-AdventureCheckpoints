@@ -4,6 +4,7 @@
 #include "GoToAct.h"
 #include "AdventureEndScreenListener.h"
 #include "ContinueCheckpointButton.h"
+#include "AdventureTimer.h"
 
 AdventureEndScreenListenerPtr screenListener = nullptr;
 
@@ -24,6 +25,9 @@ void Initialize()
 	MessageManager.AddUnmanagedListener(screenListener.get(), id("StartCheckpointProc"));
 	MessageManager.AddUnmanagedListener(screenListener.get(), id("EndCheckpointProc"));
 	MessageManager.AddUnmanagedListener(screenListener.get(), id("TimeRestored"));
+
+	// Updater function
+	App::AddUpdateFunction(new AdventureTimer());
 }
 
 /* 
