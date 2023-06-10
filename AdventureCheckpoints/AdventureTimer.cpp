@@ -34,7 +34,16 @@ void AdventureTimer::Update()
 			string16 timestr;
 			timestr.assign_convert(to_string(ScenarioMode.GetPlayMode()->field_98.GetElapsedTime()));
 			timestr = u"field_98: " + timestr;
+			
+
+			if (WindowManager.GetMainWindow()->FindWindowByID(0x07c79d98) != nullptr) {
+				IWindowPtr timer_2 = WindowManager.GetMainWindow()->FindWindowByID(0x07c79d98);
+				string16 clock = timer_2->GetCaption();
+				timestr += u"\nTime: " + clock;
+			}
+
 			timer->SetCaption(timestr.c_str());
+
 		}
 	}
 }

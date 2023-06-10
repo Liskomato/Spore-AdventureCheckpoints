@@ -28,6 +28,9 @@ void Initialize()
 
 	// Updater function
 	App::AddUpdateFunction(new AdventureTimer());
+
+	// Check base address
+	App::ConsolePrintF("Base address: 0x%x",baseAddress);
 }
 
 /* 
@@ -172,7 +175,7 @@ member_detour(cScenarioPlayMode_Initialize_detour, Simulator::cScenarioPlayMode,
 
 			ScenarioMode.GetPlayMode()->mSummary = screenListener->RestoreSummary();
 			
-			ScenarioMode.GetPlayMode()->field_98 = screenListener->RestoreTime();
+		//	ScenarioMode.GetPlayMode()->field_98 = screenListener->RestoreTime();
 
 			int lastAct = screenListener->GetStoredAdventureIndex();
 			int previousAct = lastAct-1;
@@ -225,9 +228,9 @@ member_detour(GameTimeManager_Resume_detour, Simulator::cGameTimeManager, int(Si
 member_detour(Clock_Stop_detour, Clock, void(void))
 {
 	void detoured() {
-		if (Simulator::IsScenarioMode() && this->GetElapsed() == ScenarioMode.GetPlayMode()->field_98.GetElapsed()) {
+		/*if (Simulator::IsScenarioMode() && this->GetElapsed() == ScenarioMode.GetPlayMode()->field_98.GetElapsed()) {
 			screenListener->SetClock(ScenarioMode.GetPlayMode()->field_98);
-		}
+		}*/
 		original_function(this);
 	}
 };
