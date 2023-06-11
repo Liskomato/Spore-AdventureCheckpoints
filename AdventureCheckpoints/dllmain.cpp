@@ -175,7 +175,7 @@ member_detour(cScenarioPlayMode_Initialize_detour, Simulator::cScenarioPlayMode,
 
 			ScenarioMode.GetPlayMode()->mSummary = screenListener->RestoreSummary();
 			
-			ScenarioMode.GetPlayMode()->field_C0 = screenListener->RestoreTime();
+			ScenarioMode.GetPlayMode()->mCurrentTimeMS = screenListener->RestoreTime();
 
 			int lastAct = screenListener->GetStoredAdventureIndex();
 
@@ -255,7 +255,7 @@ void Dispose()
 void AttachDetours()
 {
 
-	cScenarioPlayMode_Initialize_detour::attach(Address(ModAPI::ChooseAddress(0xf1f450, 0xf1f060)));
+	cScenarioPlayMode_Initialize_detour::attach(GetAddress(Simulator::cScenarioPlayMode, Initialize));
 	UILayoutLoad_detour::attach(GetAddress(UTFWin::UILayout,Load));
 	GameTimeManager_Resume_detour::attach(GetAddress(Simulator::cGameTimeManager, Resume));
 	Clock_Stop_detour::attach(GetAddress(Clock, Pause));

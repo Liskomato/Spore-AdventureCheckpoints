@@ -32,11 +32,11 @@ void AdventureTimer::Update()
 		if (anchor->FindWindowByID(id("Text")) != nullptr) {
 			IWindowPtr timer = anchor->FindWindowByID(id("Text"));
 			string16 timestr;
-			timestr.assign_convert(to_string(ScenarioMode.GetPlayMode()->field_98.GetElapsedTime()));
+			timestr.assign_convert(to_string(ScenarioMode.GetPlayMode()->mCinematicDelay.GetElapsedTime()));
 			timestr = u"field_98: " + timestr;
 			
 			// time is in milliseconds (ms)
-			int time = ScenarioMode.GetPlayMode()->field_C0;
+			int time = ScenarioMode.GetPlayMode()->mCurrentTimeMS;
 
 			string16 scenariotime;
 			scenariotime.assign_convert(to_string(time));
