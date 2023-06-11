@@ -7,7 +7,7 @@
 // To avoid repeating UTFWin:: all the time.
 using namespace UTFWin;
 
-static UILayoutPtr Button = nullptr, Button2 = nullptr;
+static UILayoutPtr Button = nullptr, Button2 = nullptr, Text1 = nullptr;
 
 class ContinueCheckpointButton 
 	: public IWinProc

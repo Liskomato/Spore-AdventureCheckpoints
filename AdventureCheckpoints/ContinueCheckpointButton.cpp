@@ -47,8 +47,8 @@ bool ContinueCheckpointButton::HandleUIMessage(IWindow* window, const Message& m
 	
 	if (message.IsType(kMsgComponentActivated))
 	{
-		App::ConsolePrintF("Button hit. Something should happen.");
-	//	App::ConsolePrintF("Restarting from the current act...");
+	//	App::ConsolePrintF("Button hit. Something should happen.");
+		App::ConsolePrintF("Restarting from the current act...");
 	
 	//	Send message to the listener knowing that the checkpoint button was pressed.
 		MessageManager.MessageSend(id("StartCheckpointProc"),nullptr);

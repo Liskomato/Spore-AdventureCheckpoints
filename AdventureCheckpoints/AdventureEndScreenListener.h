@@ -23,11 +23,23 @@ public:
 	void StartFromCheckpoint(int previousAct);
 	bool IsCheckpointActivated();
 	int GetStoredAdventureIndex();
-	Clock RestoreTime();
+	int RestoreTime();
 	Simulator::cScenarioPlaySummary RestoreSummary();
+//	void SetTime(int time);
+
 private:
 	bool checkpointEnabled;
 	int storedActIndex;
-	Clock storedTime;
+	int storedTime;
 	Simulator::cScenarioPlaySummary storedSummary;
+};
+
+class ClockExt
+	: public Clock
+{
+public:
+	LARGE_INTEGER GetStartTime();
+	LARGE_INTEGER GetAccumulatedTime();
+	void SetStartTime(LARGE_INTEGER time);
+	void SetAccumulatedTime(LARGE_INTEGER time);
 };

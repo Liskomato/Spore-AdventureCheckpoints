@@ -3,8 +3,10 @@ animations~	0x0
 names
 AdventureResultsScreen~ 0x3098258b
 layouts_atlas~	0x40464200
+ScenarioMissionCard
 AdventureCheckpoin
 CheckpointButtonUI
+ja-jp
 Ad
 Af
 Adve
@@ -12,22 +14,33 @@ ExpansionPack1
 Afd
 AdventureCheckpoints
 Adven
+en-gb
 Advent
 AdventureCh
 AdventureCheck
+Text
+CheckpointButtonUI_COPY
 en-us
 AdventureCheckpoi
+pl-pl
 AdventureCheckpo
 AdventureChe
+no-no
+de-de
 Adventure
 CheckpointButton
+sv-se
 Adv
 AdventureChec
+ru-ru
 A
 AdventureCheckpoint
 Adventu
+Timer
+da-dk
 fi-fi
 AdventureC
 locale~	0x2fabf01
+es-es
 Adventur
 sporemaster

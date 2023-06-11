@@ -4,12 +4,14 @@
 #include <chrono>
 #include <thread>
 
+// Listener class functions
+
 AdventureEndScreenListener::AdventureEndScreenListener()
 {
 	checkpointEnabled = false;
 	storedActIndex = 0;
 	storedSummary = Simulator::cScenarioPlaySummary();
-	storedTime = Clock();
+	storedTime = 0;
 }
 
 
@@ -40,24 +42,32 @@ bool AdventureEndScreenListener::HandleMessage(uint32_t messageID, void* message
 		checkpointEnabled = true;
 		storedActIndex = ScenarioMode.GetPlayMode()->mCurrentActIndex;
 		storedSummary = ScenarioMode.GetPlayMode()->mSummary;
-		storedTime = ScenarioMode.GetPlayMode()->field_98;
+		storedTime = ScenarioMode.GetPlayMode()->mCurrentTimeMS;
+
 	}
 	else if (messageID == id("EndCheckpointProc"))
 	{
 		checkpointEnabled = false;
 		storedActIndex = 0;
-
 		storedSummary = Simulator::cScenarioPlaySummary();
-		storedTime = Clock();
+		storedTime = 0;
+		
 	}
+	/*	Older attempt
+	else if (messageID == id("TimeRestored"))
+	{
+		checkpointEnabled = false;
+		storedTime = 0;
+
+	}
+	*/
 	// Return true if the message has been handled. Other listeners will receive the message regardless of the return value.
 	return true;
 }
 
 void AdventureEndScreenListener::StartFromCheckpoint(int previousAct) {
 	
-
-//	GoToAct::SetNewAct(previousAct, ScenarioMode.GetPlayMode()->mCurrentActIndex);
+	ScenarioMode.GetPlayMode()->JumpToAct(previousAct-1);
 }
 
 bool AdventureEndScreenListener::IsCheckpointActivated() {
@@ -68,10 +78,36 @@ int AdventureEndScreenListener::GetStoredAdventureIndex() {
 	return storedActIndex;
 }
 
-Clock AdventureEndScreenListener::RestoreTime() {
+int AdventureEndScreenListener::RestoreTime() {
 	return storedTime;
 }
 
 Simulator::cScenarioPlaySummary AdventureEndScreenListener::RestoreSummary() {
 	return storedSummary;
+}
+/*
+void AdventureEndScreenListener::SetTime(int time) {
+	storedTime = time;
+}
+*/
+// class ClockExt functions
+
+LARGE_INTEGER ClockExt::GetStartTime() 
+{
+	return mStartTime;
+}
+
+LARGE_INTEGER ClockExt::GetAccumulatedTime()
+{
+	return mAccumulatedTime;
+}
+
+void ClockExt::SetStartTime(LARGE_INTEGER time) 
+{
+	mStartTime = time;
+}
+
+void ClockExt::SetAccumulatedTime(LARGE_INTEGER time) 
+{
+	mAccumulatedTime = time;
 }
