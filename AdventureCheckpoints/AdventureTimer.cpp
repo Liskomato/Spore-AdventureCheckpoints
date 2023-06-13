@@ -32,17 +32,21 @@ void AdventureTimer::Update()
 		if (anchor->FindWindowByID(id("Text")) != nullptr) {
 			IWindowPtr timer = anchor->FindWindowByID(id("Text"));
 			string16 timestr;
-			timestr.assign_convert(to_string(ScenarioMode.GetPlayMode()->mCinematicDelay.GetElapsedTime()));
-			timestr = u"field_98: " + timestr;
+			timestr.assign_convert(to_string(ScenarioMode.GetPlayMode()->mSummary.mNumDeaths));
+
+			LocalizedString deaths;
+			deaths.SetText(id("AdventureCheckpoints"),0x2,u"Deaths:");
+
+			timestr = (string16)deaths.GetText() + u" " + timestr;
 			
 			// time is in milliseconds (ms)
 			int time = ScenarioMode.GetPlayMode()->mCurrentTimeMS;
-
+			/*
 			string16 scenariotime;
 			scenariotime.assign_convert(to_string(time));
 
 			timestr += u"\nfield_C0: " + scenariotime;
-
+			*/
 			int hours, minutes, seconds, milliseconds;
 			string16 clock;
 
@@ -60,7 +64,10 @@ void AdventureTimer::Update()
 
 			clock.append_sprintf(u"%02d:%02d:%02d.%03d",hours,minutes,seconds,milliseconds);
 
-			timestr += u"\nTime: " + clock;
+			LocalizedString time_local;
+			time_local.SetText(id("EP1_Headers"), 0x07736317,u"Time:");
+
+			timestr += u"\n" + (string16)time_local.GetText() + u" " + clock;
 
 			timer->SetCaption(timestr.c_str());
 
