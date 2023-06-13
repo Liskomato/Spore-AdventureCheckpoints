@@ -37,7 +37,7 @@ void AdventureTimer::Update()
 			LocalizedString deaths;
 			deaths.SetText(id("AdventureCheckpoints"),0x2,u"Deaths:");
 
-			timestr = (string16)deaths.GetText() + u" " + timestr;
+			timestr = (string16)deaths.GetText() + u": " + timestr;
 			
 			// time is in milliseconds (ms)
 			int time = ScenarioMode.GetPlayMode()->mCurrentTimeMS;
@@ -67,7 +67,7 @@ void AdventureTimer::Update()
 			LocalizedString time_local;
 			time_local.SetText(id("EP1_Headers"), 0x07736317,u"Time:");
 
-			timestr += u"\n" + (string16)time_local.GetText() + u" " + clock;
+			timestr += u"\n" + (string16)time_local.GetText() + u": " + clock;
 
 			timer->SetCaption(timestr.c_str());
 

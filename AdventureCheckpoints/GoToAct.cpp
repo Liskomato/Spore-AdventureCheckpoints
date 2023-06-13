@@ -60,14 +60,23 @@ const char* GoToAct::GetDescription(ArgScript::DescriptionMode mode) const
 		return "Jump to an adventure act of your choosing.";
 	}
 	else {
-		return "GoToAct: Go to the act in Adventure Play Mode specified by your input. Choose a number from 1 to 8.";
+		return "GoToAct: Go to the act in Adventure Play Mode specified by your input. Choose a number from 1 to 8. \nWARNING!\nGoing forward in acts will add a penalty time of 1 hour 30 minutes to the clock!";
 	}
 }
 
 void GoToAct::SetNewAct(int newAct, int currentAct) 
 {
-	newAct--;
-	ScenarioMode.GetPlayMode()->JumpToAct(newAct);
+	// Jump to the act with the designated index.
+	ScenarioMode.GetPlayMode()->JumpToAct(newAct-1);
+	
+	// Penalty for using the cheat if going forward in acts: Added time to clock.
+	if (newAct > currentAct) {
+		int penalty = 5400000;
+		ScenarioMode.GetPlayMode()->mCurrentTimeMS += penalty;
+		App::ConsolePrintF("Added %d seconds to the adventure playtime.",penalty/1000);
+	}
+
+	/// Old methods used by the cheat.
 //	CALL(Address(ModAPI::ChooseAddress(0xf1f7b0, 0xf1f3c0)), void, Args(Simulator::cScenarioPlayMode*, int), Args(ScenarioMode.GetPlayMode(), newAct));
 //	CALL(Address(0xF462B0), void, Args(Simulator::cScenarioData*, int, int, int), Args(ScenarioMode.GetData(), 2, currentAct, newAct));
 //	ScenarioMode.GetPlayMode()->SetCurrentAct(newAct);
