@@ -17,14 +17,17 @@ void GoToAct::ParseLine(const ArgScript::Line& line)
 	// This method is called when your cheat is invoked.
 	// Put your cheat code here.
 	
+	// Making sure we're first in the correct game mode.
 	if (Simulator::IsScenarioMode() && ScenarioMode.GetMode() == App::cScenarioMode::Mode::PlayMode) {
-
+			// Get the argument.
 			auto arg = line.GetArgumentAt(1);
 
+			// Retrieve the relevant data from the adventure.
 			uint32_t newAct;
 			auto oldAct = ScenarioMode.GetPlayMode()->mCurrentActIndex;
 			auto actAmount = ScenarioMode.GetResource()->mActs.size();
 
+			// Trying to parse the argument with the cheat.
 			try {
 				newAct = mpFormatParser->ParseInt(arg);
 			}
@@ -32,12 +35,13 @@ void GoToAct::ParseLine(const ArgScript::Line& line)
 				App::ConsolePrintF("Please input a number between 1-8.");
 				return;
 			}
+			// Making sure the given index is within range and that it exists within adventure data.
 			if (newAct <= 8 && newAct >= 1) {
 				if(newAct > actAmount) {
 					App::ConsolePrintF("The given act index doesn't exist in this adventure!");
 				}
 				else {
-					SetNewAct(newAct, oldAct);
+					SetNewAct(newAct, oldAct); // If everything goes right, move to the next part.
 				}
 				return;
 			}

@@ -1,6 +1,5 @@
 // dllmain.cpp : Defines the entry point for the DLL application.
 #include "stdafx.h"
-#include "ScenarioRewardScreen.h"
 #include "GoToAct.h"
 #include "AdventureEndScreenListener.h"
 #include "ContinueCheckpointButton.h"
@@ -29,42 +28,10 @@ void Initialize()
 	// Updater function
 	App::AddUpdateFunction(new AdventureTimer());
 
-	// Check base address
-	App::ConsolePrintF("Base address: 0x%x",baseAddress);
+	// Check base address (Mod research)
+//	App::ConsolePrintF("Base address: 0x%x",baseAddress);
 }
 
-/* 
-virtual_detour(HandleUIMessage_Detour,UTFWin::IWinProc,UTFWin::IWinProc, bool(UTFWin::IWindow*, const UTFWin::Message&)) {	
-
-	bool detoured(UTFWin::IWindow* window, const UTFWin::Message& message) 
-	{ 
-		
-	}
-};
-*/
-/*
-member_detour(ScenarioRewardScreen_detour,ScenarioRewardScreen,void*(void*,void*)) {
-	void* detoured(void* a1, void* a2) {
-
-		auto func = original_function(this,a1,a2);
-
-		IWindowPtr window = this->mpLayout->GetContainerWindow();
-
-		UTFWin::UILayout button, button2;
-
-		button.LoadByName(u"CheckpointButton");
-		button.SetParentWindow(window->FindWindowByID(0x07C796D0));
-
-		button2.LoadByName(u"CheckpointButton");
-		button2.SetParentWindow(window->FindWindowByID(0x07C79820));
-
-		button.GetContainerWindow()->AddWinProc(new ContinueCheckpointButton());
-		button2.GetContainerWindow()->AddWinProc(new ContinueCheckpointButton());
-
-		return func;
-	}
-};
-*/
 member_detour(UILayoutLoad_detour, UILayout, bool(const ResourceKey&, bool, uint32_t)) 
 {
 
@@ -76,36 +43,9 @@ member_detour(UILayoutLoad_detour, UILayout, bool(const ResourceKey&, bool, uint
 		// Checkpoint buttons are loaded with this instance ID.
 		if (resourceKey.instanceID == 0x3098258b) {
 
-	//		IWindowPtr parentWindow = this->GetContainerWindow();
-
-			/*
-			IWindowPtr child1 = new Window();
-			IWindowPtr child2 = new Window();
-
-			parent1->SetControlID(0xFFFFFFFF);
-			parent2->SetControlID(0xFFFFFFFF);
-
-			parent1->SetFillColor(0x7f7f7f);
-			parent2->SetFillColor(0x7f7f7f);
-
-			parent1->SetEnabled(true);
-			parent2->SetEnabled(true);
-
-			parentWindow->FindWindowByID(0x07C796D0)->AddWindow(parent1.get());
-			parentWindow->FindWindowByID(0x07C79820)->AddWindow(parent2.get());
-
-			parent1->SetLayoutArea(Math::Rectangle(-542,-60,-392,-23));
-			parent2->SetLayoutArea(Math::Rectangle(-542, -61, -392, -24));
-
-			*/
-			
-			
-	//		IWindowPtr parent1 = this->FindWindowByID(0x07C796D0);
-	//		IWindowPtr parent2 = this->FindWindowByID(0x07C79820);
-	//		/*
 			Button = new UTFWin::UILayout();
 			Button2 = new UTFWin::UILayout();
-
+			// Load the buttons and set them on each variant of the reward screen (if we're able).
 			if (Button->LoadByName(u"CheckpointButtonUI"))
 			Button->SetParentWindow(this->FindWindowByID(0x07C796D0));
 
@@ -127,26 +67,9 @@ member_detour(UILayoutLoad_detour, UILayout, bool(const ResourceKey&, bool, uint
 				winBtn->GetParent()->BringToFront(winBtn.get());
 				winBtn->FindWindowByID(0x07C79940)->AddWinProc(new ContinueCheckpointButton());
 			}
-	//		*/
-
-	//		this->FindWindowByID(0x07C79820)->FindWindowByID(id("CheckpointButton"))->AddWinProc(new ContinueCheckpointButton());
-	//		this->FindWindowByID(0x07C796D0)->FindWindowByID(id("CheckpointButton"))->AddWinProc(new ContinueCheckpointButton());
-
-	//		this->FindWindowByID(0x07C79820)->FindWindowByID(0x07C79940)->AddWinProc(new ContinueCheckpointButton());
-	//		this->FindWindowByID(0x07C796D0)->FindWindowByID(0x07C79940)->AddWinProc(new ContinueCheckpointButton());
-
-	//		parent1->BringToFront(button.FindWindowByID(id("CheckpointButton")));
-	//		parent2->BringToFront(button2.FindWindowByID(id("CheckpointButton")));
-
-
-	//		parent1->SetVisible(true);
-	//		parent2->SetVisible(true);
-
-	//		parentWindow->FindWindowByID(0x07C796D0)->BringToFront(parent1.get());
-	//		parentWindow->FindWindowByID(0x07C79820)->BringToFront(parent2.get());
 
 		}
-		// Text layout
+		// Text layout for the timer + death counter (can also house other debug information due to its nature)
 		if (resourceKey.instanceID == 0xf8d70d51) {
 			Text1 = new UILayout();
 			if (Text1->LoadByName(u"Timer")) {
@@ -169,9 +92,13 @@ member_detour(cScenarioPlayMode_Initialize_detour, Simulator::cScenarioPlayMode,
 
 	void detoured()
 	{
+		// We want the original function to run first, so we can do our things afterwards.
 		original_function(this);
-		if (screenListener->IsCheckpointActivated() && screenListener->GetStoredAdventureIndex() != 0)
+
+		// Check if the checkpoint button was pressed.
+		if (screenListener->IsCheckpointActivated())
 		{
+			// Restore playtime, summary, and furthest act reached from the previous adventure run, if "Continue from Previous Act" button was pressed.
 
 			ScenarioMode.GetPlayMode()->mSummary = screenListener->RestoreSummary();
 			
@@ -179,63 +106,24 @@ member_detour(cScenarioPlayMode_Initialize_detour, Simulator::cScenarioPlayMode,
 
 			int lastAct = screenListener->GetStoredAdventureIndex();
 
-			/// Methodology 1: Call method 0xf1f7b0 (Now added to SDK)
-			ScenarioMode.GetPlayMode()->field_90 = 3;
+			// Check if we need to go ahead in acts.
+			if (lastAct != 0) {
 
-			// CALL(Address(ModAPI::ChooseAddress(0xf1f7b0, 0xf1f3c0)), void, Args(Simulator::cScenarioPlayMode*, int), Args(ScenarioMode.GetPlayMode(), lastAct));
-			ScenarioMode.GetPlayMode()->JumpToAct(lastAct);
+				// field_90 needs to be set to 3, otherwise JumpToAct will fail.
+				ScenarioMode.GetPlayMode()->field_90 = 3;
 
-			/// Methodology 2: Call method 0xf462b0 and teleport the captain.
-		/*	CALL(Address(0xF462B0), void, Args(Simulator::cScenarioData*, int, int, int), Args(ScenarioMode.GetData(), 2, 0, lastAct));
-			ScenarioMode.GetPlayMode()->SetCurrentAct(lastAct);
-
-			int previousAct = lastAct - 1;
-			Simulator::cScenarioAct& previousActClass = ScenarioMode.GetResource()->mActs[previousAct];
-			Simulator::cScenarioGoal& goal = previousActClass.mGoals[previousActClass.mGoals.size()-1];
-			
-			Simulator::cScenarioMarker destination;
-			eastl::vector_map<int, Simulator::cScenarioMarker>& markers = ScenarioMode.GetResource()->mMarkers;
-			
-			for (auto& marker : markers) 
-			{
-				if (marker.second.mClassIndex == goal.mTargetClassIndex)
-				{
-					destination = marker.second;
-					break;
-				}
+				// Skip to the act we recorded
+				ScenarioMode.GetPlayMode()->JumpToAct(lastAct);
 			}
-			if (destination.mPosition != Vector3(0,0,0) && destination.mOrientation != Quaternion(0,0,0,1))
-			GameNounManager.GetAvatar()->Teleport(destination.mPosition,destination.mOrientation);*/
+
 		}
-			MessageManager.MessageSend(id("EndCheckpointProc"), nullptr);
+		// Send a message afterwards to the listener to clean up.	
+		MessageManager.MessageSend(id("EndCheckpointProc"), nullptr);
 
 		//	MessageManager.MessageSend(id("TimeRestored"), nullptr);
 		
 	}
 
-};
-
-member_detour(GameTimeManager_Resume_detour, Simulator::cGameTimeManager, int(Simulator::TimeManagerPause)) 
-{
-	int detoured(Simulator::TimeManagerPause pauseType) {
-
-		/*if (pauseType == Simulator::TimeManagerPause::CinematicAll && screenListener->IsCheckpointActivated())
-		{
-			ScenarioMode.GetPlayMode()->field_98 = screenListener->RestoreTime();
-			MessageManager.MessageSend(id("TimeRestored"), nullptr);
-		}*/
-		return original_function(this,pauseType);
-	}
-};
-
-member_detour(Clock_Stop_detour, Clock, void(void))
-{
-	void detoured() {
-		/*if (Simulator::IsScenarioMode() && this->GetElapsed() == ScenarioMode.GetPlayMode()->field_98.GetElapsed()) {
-			screenListener->SetClock(ScenarioMode.GetPlayMode()->field_98);
-		}*/
-		original_function(this);
-	}
 };
 
 
@@ -257,8 +145,6 @@ void AttachDetours()
 
 	cScenarioPlayMode_Initialize_detour::attach(GetAddress(Simulator::cScenarioPlayMode, Initialize));
 	UILayoutLoad_detour::attach(GetAddress(UTFWin::UILayout,Load));
-	GameTimeManager_Resume_detour::attach(GetAddress(Simulator::cGameTimeManager, Resume));
-	Clock_Stop_detour::attach(GetAddress(Clock, Pause));
 
 	/// Unused detours
 	//	ScenarioRewardScreen_detour::attach(Address(ModAPI::ChooseAddress(0xf18c40,0xf18850)));
