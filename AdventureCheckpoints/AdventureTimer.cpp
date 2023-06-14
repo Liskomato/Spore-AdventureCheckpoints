@@ -26,11 +26,10 @@ void AdventureTimer::Update()
 {
 	if (Simulator::IsScenarioMode() 
 		&& ScenarioMode.GetMode() == App::cScenarioMode::Mode::PlayMode
-		&& WindowManager.GetMainWindow()->FindWindowByID(0x055EBC68) != nullptr)
+		&& WindowManager.GetMainWindow()->FindWindowByID(id("Text")) != nullptr)
 	{
-		IWindowPtr anchor = WindowManager.GetMainWindow()->FindWindowByID(0x055EBC68);
-		if (anchor->FindWindowByID(id("Text")) != nullptr) {
-			IWindowPtr timer = anchor->FindWindowByID(id("Text"));
+
+			IWindowPtr timer = WindowManager.GetMainWindow()->FindWindowByID(id("Text"));
 			string16 timestr;
 			timestr.assign_convert(to_string(ScenarioMode.GetPlayMode()->mSummary.mNumDeaths));
 
@@ -71,7 +70,11 @@ void AdventureTimer::Update()
 
 			timer->SetCaption(timestr.c_str());
 
-		}
+		
+	}
+	else if ((!Simulator::IsScenarioMode() || ScenarioMode.GetMode() != App::cScenarioMode::Mode::PlayMode) && WindowManager.GetMainWindow()->FindWindowByID(id("Text")) != nullptr)
+	{
+		WindowManager.GetMainWindow()->RemoveWindow(WindowManager.GetMainWindow()->FindWindowByID(id("Text")));
 	}
 }
 

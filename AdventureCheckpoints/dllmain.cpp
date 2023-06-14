@@ -70,6 +70,7 @@ member_detour(UILayoutLoad_detour, UILayout, bool(const ResourceKey&, bool, uint
 
 		}
 		// Text layout for the timer + death counter (can also house other debug information due to its nature)
+		/*
 		if (resourceKey.instanceID == 0xf8d70d51) {
 			Text1 = new UILayout();
 			if (Text1->LoadByName(u"Timer")) {
@@ -78,11 +79,11 @@ member_detour(UILayoutLoad_detour, UILayout, bool(const ResourceKey&, bool, uint
 			IWindowPtr text;
 			if (Text1->FindWindowByID(id("Text")) != nullptr) {
 				text = Text1->FindWindowByID(id("Text"));
-				text->SetLocation(10, 300);
+				text->SetLocation(10, 350);
 			}
 
 		}
-
+		*/
 		return func;
 	}
 
@@ -122,6 +123,17 @@ member_detour(cScenarioPlayMode_Initialize_detour, Simulator::cScenarioPlayMode,
 
 		//	MessageManager.MessageSend(id("TimeRestored"), nullptr);
 		
+		// Setting up text layout for timer + death counter.
+		Text1 = new UILayout();
+		if (Text1->LoadByName(u"Timer")) {
+			Text1->SetParentWindow(WindowManager.GetMainWindow());
+		}
+		IWindowPtr text;
+		if (Text1->FindWindowByID(id("Text")) != nullptr) {
+			text = Text1->FindWindowByID(id("Text"));
+			text->SetLocation(10, 350);
+		}
+
 	}
 
 };
