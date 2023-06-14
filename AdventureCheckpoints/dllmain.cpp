@@ -125,8 +125,8 @@ member_detour(cScenarioPlayMode_Initialize_detour, Simulator::cScenarioPlayMode,
 		
 		// Setting up text layout for timer + death counter.
 		Text1 = new UILayout();
-		if (Text1->LoadByName(u"Timer")) {
-			Text1->SetParentWindow(WindowManager.GetMainWindow());
+		if (Text1->LoadByName(u"Timer") && WindowManager.GetMainWindow()->FindWindowByID(0xec2fd2c3) != nullptr) {
+			Text1->SetParentWindow(WindowManager.GetMainWindow()->FindWindowByID(0xec2fd2c3));
 		}
 		IWindowPtr text;
 		if (Text1->FindWindowByID(id("Text")) != nullptr) {
