@@ -71,13 +71,18 @@ const char* GoToAct::GetDescription(ArgScript::DescriptionMode mode) const
 void GoToAct::SetNewAct(int newAct, int currentAct) 
 {
 	// Jump to the act with the designated index.
-	ScenarioMode.GetPlayMode()->JumpToAct(newAct-1);
+	newAct--;
+	ScenarioMode.GetPlayMode()->JumpToAct(newAct);
 	
 	// Penalty for using the cheat if going forward in acts: Added time to clock.
 	if (newAct > currentAct) {
-		int penalty = 5400000;
-		ScenarioMode.GetPlayMode()->mCurrentTimeMS += penalty;
-		App::ConsolePrintF("Added %d seconds to the adventure playtime.",penalty/1000);
+		int penalty = 1800000, totalPenalty = 0, i = currentAct;
+		while (i < newAct) {
+			ScenarioMode.GetPlayMode()->mCurrentTimeMS += penalty;
+			totalPenalty += penalty;
+			i++;
+		}
+		App::ConsolePrintF("Added %d seconds to the adventure playtime.",totalPenalty/1000);
 	}
 
 	/// Old methods used by the cheat.
