@@ -28,7 +28,7 @@ void Initialize()
 
 	// "Static" pointers
 	screenListener = new AdventureEndScreenListener();
-	timer = new AdventureTimer();
+	timer = AdventureTimer::Initialize();
 
 	// Listeners
 	MessageManager.AddUnmanagedListener(screenListener.get(), id("StartCheckpointProc"));
@@ -69,6 +69,7 @@ member_detour(UILayoutLoad_detour, UILayout, bool(const ResourceKey&, bool, uint
 				winBtn->SetLocation(-231, 520);
 				winBtn->GetParent()->BringToFront(winBtn.get());
 				winBtn->FindWindowByID(0x07C79940)->AddWinProc(new ContinueCheckpointButton());
+				winBtn->SetVisible(false);
 
 			}
 			if (Button2->FindWindowByID(id("CheckpointButton")) != nullptr) {
@@ -76,6 +77,7 @@ member_detour(UILayoutLoad_detour, UILayout, bool(const ResourceKey&, bool, uint
 				winBtn->SetLocation(-231, 206);
 				winBtn->GetParent()->BringToFront(winBtn.get());
 				winBtn->FindWindowByID(0x07C79940)->AddWinProc(new ContinueCheckpointButton());
+				winBtn->SetVisible(false);
 			}
 
 		}
@@ -150,8 +152,8 @@ member_detour(cScenarioPlayMode_Initialize_detour, Simulator::cScenarioPlayMode,
 		}
 
 		// Debug text layout
-		if (Text2->LoadByName(u"TimerDebug") && WindowManager.GetMainWindow()->FindWindowByID(0xec2fd2c3) != nullptr) {
-			Text2->SetParentWindow(WindowManager.GetMainWindow()->FindWindowByID(0xec2fd2c3));
+		if (Text2->LoadByName(u"TimerDebug")) {
+			Text2->SetParentWindow(WindowManager.GetMainWindow());
 			if (Text2->FindWindowByID(id("TextDebug")) != nullptr) {
 				text = Text2->FindWindowByID(id("TextDebug"));
 				text->SetLocation(10, 400);
@@ -180,7 +182,7 @@ void Dispose()
 
 	// Timer object
 	timer->listener = nullptr;
-	timer = nullptr;
+	timer->Dispose();
 }
 
 void AttachDetours()

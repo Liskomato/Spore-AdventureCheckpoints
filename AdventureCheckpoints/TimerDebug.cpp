@@ -16,9 +16,10 @@ void TimerDebug::ParseLine(const ArgScript::Line& line)
 {
 	// This method is called when your cheat is invoked.
 	// Put your cheat code here.
-	if (timer != nullptr) {
-		timer->debugEnabled = !timer->debugEnabled;
-		if (timer->debugEnabled) App::ConsolePrintF("Adventure Checkpoints debug mode enabled.");
+	auto time = AdventureTimer::Get();
+	if (time != nullptr) {
+		time->debugEnabled = !time->debugEnabled;
+		if (time->debugEnabled) App::ConsolePrintF("Adventure Checkpoints debug mode enabled.");
 		else App::ConsolePrintF("Adventure Checkpoints debug mode disabled.");
 	}
 	else App::ConsolePrintF("Adventure Checkpoints: CheckpointDebug failed!");
