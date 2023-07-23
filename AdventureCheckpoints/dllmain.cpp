@@ -148,6 +148,7 @@ member_detour(cScenarioPlayMode_Initialize_detour, Simulator::cScenarioPlayMode,
 			if (timer != nullptr) {
 				timer->InitializeListener();
 				WindowManager.GetMainWindow()->AddWinProc(timer->listener.get());
+				text->SetVisible(timer->visible);
 			}
 		}
 

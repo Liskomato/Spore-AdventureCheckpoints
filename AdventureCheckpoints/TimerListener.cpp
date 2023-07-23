@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "TimerListener.h"
+#include "AdventureTimer.h"
 
 TimerListener::TimerListener()
 {
@@ -41,10 +42,22 @@ int TimerListener::GetEventFlags() const
 // checking what kind of message was sent...
 bool TimerListener::HandleUIMessage(IWindow* window, const Message& message)
 {
-	if (message.IsType(kMsgKeyUp2) && (message.KeyPress.vkey == 't' || message.KeyPress.vkey == 'T') && window->FindWindowByID(id("Text")) != nullptr) {
-		IWindowPtr text = window->FindWindowByID(id("Text"));
-		text->SetVisible(!text->IsVisible());
-		return true;
+	if (AdventureTimer::Get() != nullptr) {
+		timer = AdventureTimer::Get();
+		if (message.IsType(kMsgKeyDown) && (message.Key.vkey == 't' || message.Key.vkey == 'T')) 
+		{
+			if (message.Key.modifiers == kModifierCtrlDown + kModifierShiftDown) 
+			{
+				timer->debugEnabled = !timer->debugEnabled;
+				return true;
+			}
+			else 
+			{
+				timer->visible = !timer->visible;
+				return true;
+			}
+		}
+		
 	}
 	// Return true if the message was handled, and therefore no other window procedure should receive it.
 	return false;
