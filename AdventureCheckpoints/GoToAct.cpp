@@ -64,7 +64,7 @@ const char* GoToAct::GetDescription(ArgScript::DescriptionMode mode) const
 		return "Jump to an adventure act of your choosing.";
 	}
 	else {
-		return "GoToAct: Go to the act in Adventure Play Mode specified by your input. Choose a number from 1 to 8. \nWARNING!\nGoing forward in acts will add a penalty time of 1 hour 30 minutes to the clock!";
+		return "GoToAct: Go to the act in Adventure Play Mode specified by your input. Choose a number from 1 to 8. \nWARNING!\nGoing forward in acts will add a penalty time of 30 minutes per act skipped to the clock!";
 	}
 }
 

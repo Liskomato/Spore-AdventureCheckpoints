@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Spore\BasicIncludes.h>
+#include "TimerListener.h"
 
 #define AdventureTimerPtr intrusive_ptr<AdventureTimer>
 
@@ -14,10 +15,17 @@ public:
 	
 	AdventureTimer();
 	~AdventureTimer();
-	
+
+	TimerListenerPtr listener;
+	bool visible;
+	bool debugEnabled;
 
 	int AddRef() override;
 	int Release() override;
 	void Update() override;
 	void* Cast(uint32_t type) const override;
+
+	void InitializeListener();
 };
+
+AdventureTimerPtr timer = nullptr;

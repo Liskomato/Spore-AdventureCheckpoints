@@ -1,11 +1,15 @@
 // dllmain.cpp : Defines the entry point for the DLL application.
 #include "stdafx.h"
 #include "GoToAct.h"
+#include "TimerDebug.h"
 #include "AdventureEndScreenListener.h"
 #include "ContinueCheckpointButton.h"
 #include "AdventureTimer.h"
+#include "TimerListener.h"
+
 
 AdventureEndScreenListenerPtr screenListener = nullptr;
+
 
 
 void Initialize()
@@ -17,16 +21,22 @@ void Initialize()
 	//  - Add new game modes
 	//  - Add new space tools
 	//  - Change materials
+
+	// Cheats
 	CheatManager.AddCheat("GoToAct", new GoToAct());
+	CheatManager.AddCheat("CheckpointDebug", new TimerDebug());
 
+	// "Static" pointers
 	screenListener = new AdventureEndScreenListener();
+	timer = new AdventureTimer();
 
+	// Listeners
 	MessageManager.AddUnmanagedListener(screenListener.get(), id("StartCheckpointProc"));
 	MessageManager.AddUnmanagedListener(screenListener.get(), id("EndCheckpointProc"));
 //	MessageManager.AddUnmanagedListener(screenListener.get(), id("TimeRestored"));
 
-	// Updater function
-	App::AddUpdateFunction(new AdventureTimer());
+	// Update functions
+	App::AddUpdateFunction(timer.get());
 
 	// Check base address (Mod research)
 //	App::ConsolePrintF("Base address: 0x%x",baseAddress);
@@ -124,7 +134,8 @@ member_detour(cScenarioPlayMode_Initialize_detour, Simulator::cScenarioPlayMode,
 		//	MessageManager.MessageSend(id("TimeRestored"), nullptr);
 		
 		// Setting up text layout for timer + death counter.
-		Text1 = new UILayout();
+		Text1 = new UILayout(); // Timer + Death counter
+		Text2 = new UILayout(); // Debug information, visibility controlled by CheckpointDebug cheat.
 		if (Text1->LoadByName(u"Timer") && WindowManager.GetMainWindow()->FindWindowByID(0xec2fd2c3) != nullptr) {
 			Text1->SetParentWindow(WindowManager.GetMainWindow()->FindWindowByID(0xec2fd2c3));
 		}
@@ -132,7 +143,22 @@ member_detour(cScenarioPlayMode_Initialize_detour, Simulator::cScenarioPlayMode,
 		if (Text1->FindWindowByID(id("Text")) != nullptr) {
 			text = Text1->FindWindowByID(id("Text"));
 			text->SetLocation(10, 350);
+			if (timer != nullptr) {
+				timer->InitializeListener();
+				WindowManager.GetMainWindow()->AddWinProc(timer->listener.get());
+			}
 		}
+
+		// Debug text layout
+		if (Text2->LoadByName(u"TimerDebug") && WindowManager.GetMainWindow()->FindWindowByID(0xec2fd2c3) != nullptr) {
+			Text2->SetParentWindow(WindowManager.GetMainWindow()->FindWindowByID(0xec2fd2c3));
+			if (Text2->FindWindowByID(id("TextDebug")) != nullptr) {
+				text = Text2->FindWindowByID(id("TextDebug"));
+				text->SetLocation(10, 400);
+				text->SetVisible(timer->debugEnabled);
+			}
+		}
+
 
 	}
 
@@ -147,9 +173,14 @@ void Dispose()
 	Button = nullptr;
 	Button2 = nullptr;
 	Text1 = nullptr;
+	Text2 = nullptr;
 
 	// Message listener
 	screenListener = nullptr;
+
+	// Timer object
+	timer->listener = nullptr;
+	timer = nullptr;
 }
 
 void AttachDetours()

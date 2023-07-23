@@ -2,22 +2,20 @@
 
 #include <Spore\BasicIncludes.h>
 
-#define ContinueCheckpointButtonPtr intrusive_ptr<ContinueCheckpointButton>
+#define TimerListenerPtr intrusive_ptr<TimerListener>
 
 // To avoid repeating UTFWin:: all the time.
 using namespace UTFWin;
 
-static UILayoutPtr Button = nullptr, Button2 = nullptr, Text1 = nullptr, Text2 = nullptr;
-
-class ContinueCheckpointButton 
-	: public IWinProc
+class TimerListener 
+	: public InteractiveWinProc
 	, public DefaultRefCounted
 {
 public:
-	static const uint32_t TYPE = id("ContinueCheckpointButton");
+	static const uint32_t TYPE = id("TimerListener");
 	
-	ContinueCheckpointButton();
-	~ContinueCheckpointButton();
+	TimerListener();
+	~TimerListener();
 
 	int AddRef() override;
 	int Release() override;
@@ -26,6 +24,5 @@ public:
 	int GetEventFlags() const override;
 	// This is the function you have to implement, called when a window you added this winproc to received an event
 	bool HandleUIMessage(IWindow* pWindow, const Message& message) override;
-	void SendAsyncMessage(IWindow* pSource, IWindow* pDest, const Message& message, bool inheritable);
 	
 };

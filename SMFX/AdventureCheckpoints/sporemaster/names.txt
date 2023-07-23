@@ -1,46 +1,50 @@
 AdventureCheckp
 animations~	0x0
-names
-AdventureResultsScreen~ 0x3098258b
-layouts_atlas~	0x40464200
 ScenarioMissionCard
 AdventureCheckpoin
 CheckpointButtonUI
 ja-jp
-Ad
-Af
 Adve
-ExpansionPack1
 Afd
 AdventureCheckpoints
-Adven
-en-gb
 Advent
 AdventureCh
 AdventureCheck
 Text
+TimerDebug
+AdventureChe
+no-no
+Adventure
+ru-ru
+AdventureCheckpoint
+Adventu
+da-dk
+AdventureC
+es-es
+TimerBackground
+Adventur
+sporemaster
+names
+AdventureResultsScreen~ 0x3098258b
+layouts_atlas~	0x40464200
+Ad
+Af
+ExpansionPack1
+Adven
+en-gb
 CheckpointButtonUI_COPY
 en-us
 AdventureCheckpoi
 pl-pl
 AdventureCheckpo
-AdventureChe
-no-no
 de-de
-Adventure
 CheckpointButton
 sv-se
+graphics_misc_2~	0x354663b
 Adv
 AdventureChec
-ru-ru
+TextDebug
 A
-AdventureCheckpoint
-Adventu
 Timer
-da-dk
 fi-fi
-AdventureC
 locale~	0x2fabf01
-es-es
-Adventur
-sporemaster
