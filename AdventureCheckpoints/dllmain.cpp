@@ -2,6 +2,7 @@
 #include "stdafx.h"
 #include "GoToAct.h"
 #include "TimerDebug.h"
+#include "CheckpointsExtended.h"
 #include "AdventureEndScreenListener.h"
 #include "ContinueCheckpointButton.h"
 #include "AdventureTimer.h"
@@ -24,7 +25,8 @@ void Initialize()
 
 	// Cheats
 	CheatManager.AddCheat("GoToAct", new GoToAct());
-	CheatManager.AddCheat("CheckpointDebug", new TimerDebug());
+	CheatManager.AddCheat("CheckpointsDebug", new TimerDebug());
+	CheatManager.AddCheat("CheckpointsExtended", new CheckpointsExtended());
 
 	// "Static" pointers
 	screenListener = new AdventureEndScreenListener();

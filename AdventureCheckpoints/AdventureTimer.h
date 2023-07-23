@@ -19,6 +19,7 @@ public:
 	TimerListenerPtr listener;
 	bool visible;
 	bool debugEnabled;
+	bool checkpointsExtended;
 
 	int AddRef() override;
 	int Release() override;

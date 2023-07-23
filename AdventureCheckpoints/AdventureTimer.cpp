@@ -6,6 +6,7 @@ AdventureTimer::AdventureTimer()
 	listener = nullptr;
 	debugEnabled = false;
 	visible = true;
+	checkpointsExtended = false;
 }
 
 
@@ -31,7 +32,7 @@ void AdventureTimer::Update()
 		{
 			if (WindowManager.GetMainWindow()->FindWindowByID(id("CheckpointButton")) != nullptr)
 			{
-				if (ScenarioMode.GetPlayMode()->field_90 == 6 && ScenarioMode.GetPlayMode()->mCurrentActIndex != 0)
+				if ((ScenarioMode.GetPlayMode()->field_90 == 6 && ScenarioMode.GetPlayMode()->mCurrentActIndex != 0) || checkpointsExtended)
 				{
 					WindowManager.GetMainWindow()->FindWindowByID(0x07C796D0)->FindWindowByID(id("CheckpointButton"))->SetVisible(true);
 					WindowManager.GetMainWindow()->FindWindowByID(0x07C79820)->FindWindowByID(id("CheckpointButton"))->SetVisible(true);

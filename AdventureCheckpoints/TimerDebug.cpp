@@ -19,10 +19,10 @@ void TimerDebug::ParseLine(const ArgScript::Line& line)
 	auto time = AdventureTimer::Get();
 	if (time != nullptr) {
 		time->debugEnabled = !time->debugEnabled;
-		if (time->debugEnabled) App::ConsolePrintF("Adventure Checkpoints debug mode enabled.");
-		else App::ConsolePrintF("Adventure Checkpoints debug mode disabled.");
+		if (time->debugEnabled) App::ConsolePrintF("Adventure Checkpoints: Debug mode enabled.");
+		else App::ConsolePrintF("Adventure Checkpoints: Debug mode disabled.");
 	}
-	else App::ConsolePrintF("Adventure Checkpoints: CheckpointDebug failed!");
+	else App::ConsolePrintF("Adventure Checkpoints: CheckpointsDebug failed!");
 
 }
 
@@ -32,6 +32,6 @@ const char* TimerDebug::GetDescription(ArgScript::DescriptionMode mode) const
 		return "Enables Adventure Checkpoints debug mode.";
 	}
 	else {
-		return "CheckpointDebug: Enables debug information to be displayed in the Adventure Play Mode. Part of the Adventure Checkpoints mod.";
+		return "CheckpointsDebug: Enables debug information to be displayed in the Adventure Play Mode. Part of the Adventure Checkpoints mod.";
 	}
 }
