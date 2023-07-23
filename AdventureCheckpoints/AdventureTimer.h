@@ -28,4 +28,4 @@ public:
 	void InitializeListener();
 };
 
-AdventureTimerPtr timer = nullptr;
+static AdventureTimerPtr timer = nullptr;
