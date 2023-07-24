@@ -184,8 +184,8 @@ void Dispose()
 	screenListener = nullptr;
 
 	// Timer object
-	timer->listener = nullptr;
 	timer->Dispose();
+	timer = nullptr;
 }
 
 void AttachDetours()

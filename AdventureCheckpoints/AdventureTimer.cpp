@@ -1,4 +1,7 @@
 #include "stdafx.h"
+#include "stdio.h"
+#include "shlobj.h"
+#include <string>
 #include "AdventureTimer.h"
 
 AdventureTimer::AdventureTimer()
@@ -7,6 +10,22 @@ AdventureTimer::AdventureTimer()
 	debugEnabled = false;
 	visible = true;
 	checkpointsExtended = false;
+
+	if (LoadData()) {
+		App::ConsolePrintF("Adventure Checkpoints: Settings status");
+
+		if (visible) App::ConsolePrintF("Timer UI is visible in adventure play mode.");
+		else App::ConsolePrintF("Timer UI is hidden. You can enable it by toggling 'T' key.");
+
+		if (checkpointsExtended) App::ConsolePrintF("Checkpoints appear every time the adventure ends.");
+		else App::ConsolePrintF("Checkpoints appear only when failing an adventure past act 1.");
+
+		if (debugEnabled) App::ConsolePrintF("Debug mode is enabled.");
+
+	}
+	else {
+		App::ConsolePrintF("Adventure Checkpoints: LoadData has failed. Settings have been kept at their defaults.");
+	}
 }
 
 
@@ -172,5 +191,66 @@ AdventureTimerPtr AdventureTimer::Initialize() {
 }
 
 void AdventureTimer::Dispose() {
+	
+	PropertyListPtr propList = new App::PropertyList();
+	FileStreamPtr stream = new IO::FileStream(GetFilePath().c_str());
+	if (!SaveData(propList.get(), stream.get(), debugEnabled, visible,checkpointsExtended)) {
+		MessageBoxW(NULL,L"AdventureTimer::SaveData has failed!\n\nSaving data to property file has failed. If you get this error message, please contact Liskomato on GitHub or Discord and tell them what you were doing at the time.",L"Adventure Checkpoints", MB_ICONERROR | MB_OK);
+	}
+
+	listener = nullptr;
 	timer = nullptr;
+}
+
+string16 AdventureTimer::GetFilePath() {
+	// Get %APPDATA%
+	PWSTR appdata;
+	/*	size_t len;
+		errno_t err = getenv_s(&appdata, &len, u"APPDATA");*/
+
+	if (SHGetKnownFolderPath(FOLDERID_RoamingAppData, KF_FLAG_CREATE, NULL, &appdata) != S_OK) {
+		// This shouldn't happen.
+		return NULL;
+	}
+
+
+	// Add rest of the filepath.
+
+	string16 path = (char16_t*)appdata;
+
+	path += u"\\Spore\\Preferences\\AdventureCheckpoints_Properties.prop";
+
+	return path;
+}
+
+bool AdventureTimer::SaveData(App::PropertyList* propList, IO::FileStream* stream,bool debug, bool visible, bool extended) {
+	propList->SetProperty(id("debugEnabled"),&App::Property().SetValueBool(debug));
+	propList->SetProperty(id("isTimerVisible"), &App::Property().SetValueBool(visible));
+	propList->SetProperty(id("checkpointsExtended"), &App::Property().SetValueBool(extended));
+	stream->Open(IO::AccessFlags::ReadWrite,IO::CD::CreateAlways);
+	bool check = propList->Write(stream);
+	stream->Close();
+	return check;
+}
+
+bool AdventureTimer::LoadData() {
+	
+	PropertyListPtr propList = new App::PropertyList();
+	FileStreamPtr stream = new IO::FileStream(GetFilePath().c_str());
+	if (stream->Open(IO::AccessFlags::Read,IO::CD::OpenExisting)) {
+		propList->Read(stream.get());
+		stream->Close();
+	}
+	if (propList->HasProperty(id("debugEnabled")) && propList->HasProperty(id("isTimerVisible")) && propList->HasProperty(id("checkpointsExtended"))) {
+		App::Property::GetBool(propList.get(), id("debugEnabled"),debugEnabled);
+		App::Property::GetBool(propList.get(), id("isTimerVisible"), visible);
+		App::Property::GetBool(propList.get(), id("checkpointsExtended"), checkpointsExtended);
+		return true;
+	}
+	else {
+		bool check = SaveData(propList.get(),stream.get(),debugEnabled,visible,checkpointsExtended);
+		if (check) App::ConsolePrintF("Adventure Checkpoints: Settings data didn't exist, so it was created to %ls", GetFilePath().c_str());
+		else App::ConsolePrintF("Adventure Checkpoints: SaveData failed! Settings file will be attempted to be created to %ls once the game is closed.", GetFilePath().c_str());
+		return check;
+	}
 }

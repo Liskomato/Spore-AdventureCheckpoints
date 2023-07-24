@@ -30,6 +30,10 @@ public:
 	static AdventureTimerPtr Get();
 	static AdventureTimerPtr Initialize();
 	void Dispose();
+
+	string16 GetFilePath();
+	bool LoadData();
+	bool SaveData(App::PropertyList* propList, IO::FileStream* stream, bool debug, bool visible, bool extended);
 };
 
 static AdventureTimerPtr timer = nullptr;

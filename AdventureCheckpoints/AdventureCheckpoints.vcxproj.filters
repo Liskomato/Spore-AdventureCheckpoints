@@ -40,6 +40,9 @@
     <ClInclude Include="TimerDebug.h">
       <Filter>AdventureCheckpoints</Filter>
     </ClInclude>
+    <ClInclude Include="CheckpointsExtended.h">
+      <Filter>AdventureCheckpoints</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -64,6 +67,9 @@
       <Filter>AdventureCheckpoints</Filter>
     </ClCompile>
     <ClCompile Include="TimerDebug.cpp">
+      <Filter>AdventureCheckpoints</Filter>
+    </ClCompile>
+    <ClCompile Include="CheckpointsExtended.cpp">
       <Filter>AdventureCheckpoints</Filter>
     </ClCompile>
   </ItemGroup>
