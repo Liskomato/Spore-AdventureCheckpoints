@@ -1,11 +1,15 @@
 // dllmain.cpp : Defines the entry point for the DLL application.
 #include "stdafx.h"
+// Cheat includes
 #include "GoToAct.h"
 #include "TimerDebug.h"
 #include "CheckpointsExtended.h"
+#include "PrintCheckpointStatus.h"
+// Timer
+#include "AdventureTimer.h"
+// Listeners
 #include "AdventureEndScreenListener.h"
 #include "ContinueCheckpointButton.h"
-#include "AdventureTimer.h"
 #include "TimerListener.h"
 
 
@@ -27,6 +31,7 @@ void Initialize()
 	CheatManager.AddCheat("GoToAct", new GoToAct());
 	CheatManager.AddCheat("CheckpointsDebug", new TimerDebug());
 	CheatManager.AddCheat("CheckpointsExtended", new CheckpointsExtended());
+	CheatManager.AddCheat("CheckpointsStatus", new PrintCheckpointStatus());
 
 	// "Static" pointers
 	screenListener = new AdventureEndScreenListener();

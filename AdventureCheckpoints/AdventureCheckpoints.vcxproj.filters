@@ -43,6 +43,9 @@
     <ClInclude Include="CheckpointsExtended.h">
       <Filter>AdventureCheckpoints</Filter>
     </ClInclude>
+    <ClInclude Include="PrintCheckpointStatus.h">
+      <Filter>AdventureCheckpoints</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -70,6 +73,9 @@
       <Filter>AdventureCheckpoints</Filter>
     </ClCompile>
     <ClCompile Include="CheckpointsExtended.cpp">
+      <Filter>AdventureCheckpoints</Filter>
+    </ClCompile>
+    <ClCompile Include="PrintCheckpointStatus.cpp">
       <Filter>AdventureCheckpoints</Filter>
     </ClCompile>
   </ItemGroup>

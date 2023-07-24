@@ -34,6 +34,7 @@ public:
 	string16 GetFilePath();
 	bool LoadData();
 	bool SaveData(App::PropertyList* propList, IO::FileStream* stream, bool debug, bool visible, bool extended);
+	void PrintStatus();
 };
 
 static AdventureTimerPtr timer = nullptr;

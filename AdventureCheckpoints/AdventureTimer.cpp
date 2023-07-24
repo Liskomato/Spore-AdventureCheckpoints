@@ -12,16 +12,7 @@ AdventureTimer::AdventureTimer()
 	checkpointsExtended = false;
 
 	if (LoadData()) {
-		App::ConsolePrintF("Adventure Checkpoints: Settings status");
-
-		if (visible) App::ConsolePrintF("Timer UI is visible in adventure play mode.");
-		else App::ConsolePrintF("Timer UI is hidden. You can enable it by toggling 'T' key.");
-
-		if (checkpointsExtended) App::ConsolePrintF("Checkpoints appear every time the adventure ends.");
-		else App::ConsolePrintF("Checkpoints appear only when failing an adventure past act 1.");
-
-		if (debugEnabled) App::ConsolePrintF("Debug mode is enabled.");
-
+		PrintStatus();
 	}
 	else {
 		App::ConsolePrintF("Adventure Checkpoints: LoadData has failed. Settings have been kept at their defaults.");
@@ -253,4 +244,17 @@ bool AdventureTimer::LoadData() {
 		else App::ConsolePrintF("Adventure Checkpoints: SaveData failed! Settings file will be attempted to be created to %ls once the game is closed.", GetFilePath().c_str());
 		return check;
 	}
+}
+
+void AdventureTimer::PrintStatus() {
+	
+	App::ConsolePrintF("--- Adventure Checkpoints: Settings status ---");
+
+	if (visible) App::ConsolePrintF("- Timer UI is visible in adventure play mode.");
+	else App::ConsolePrintF("- Timer UI is hidden. You can enable it by toggling 'T' key.");
+
+	if (checkpointsExtended) App::ConsolePrintF("- Checkpoints appear every time the adventure ends.");
+	else App::ConsolePrintF("- Checkpoints appear only when failing an adventure past act 1.");
+
+	if (debugEnabled) App::ConsolePrintF("- Debug mode is enabled.");
 }
