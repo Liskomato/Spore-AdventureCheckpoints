@@ -11,6 +11,21 @@
     <Filter Include="Internal">
       <UniqueIdentifier>{d62ad12d-69d8-4933-8342-03043c9adc22}</UniqueIdentifier>
     </Filter>
+    <Filter Include="AdventureCheckpoints\Cheats">
+      <UniqueIdentifier>{520c80e0-45ae-41b7-8030-f07d3e1a2a35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AdventureCheckpoints\Listeners">
+      <UniqueIdentifier>{1aa09ae3-f6ef-49af-b320-b84f6382e5e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AdventureCheckpoints\Headers">
+      <UniqueIdentifier>{c521eb87-b54b-466b-9a47-2602e94a98c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AdventureCheckpoints\Headers\Cheats">
+      <UniqueIdentifier>{e607763e-e468-460f-a956-c40507fd198c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AdventureCheckpoints\Headers\Listeners">
+      <UniqueIdentifier>{7e45c116-8973-4139-adc2-2d5e693d8928}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -19,32 +34,32 @@
     <ClInclude Include="stdafx.h">
       <Filter>Internal</Filter>
     </ClInclude>
-    <ClInclude Include="GoToAct.h">
-      <Filter>AdventureCheckpoints</Filter>
-    </ClInclude>
-    <ClInclude Include="ContinueCheckpointButton.h">
-      <Filter>AdventureCheckpoints</Filter>
-    </ClInclude>
-    <ClInclude Include="AdventureEndScreenListener.h">
-      <Filter>AdventureCheckpoints</Filter>
+    <ClInclude Include="AdventureTimer.h">
+      <Filter>AdventureCheckpoints\Headers</Filter>
     </ClInclude>
     <ClInclude Include="ScenarioRewardScreen.h">
-      <Filter>AdventureCheckpoints</Filter>
+      <Filter>AdventureCheckpoints\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="AdventureTimer.h">
-      <Filter>AdventureCheckpoints</Filter>
+    <ClInclude Include="AdventureEndScreenListener.h">
+      <Filter>AdventureCheckpoints\Headers\Listeners</Filter>
+    </ClInclude>
+    <ClInclude Include="ContinueCheckpointButton.h">
+      <Filter>AdventureCheckpoints\Headers\Listeners</Filter>
     </ClInclude>
     <ClInclude Include="TimerListener.h">
-      <Filter>AdventureCheckpoints</Filter>
-    </ClInclude>
-    <ClInclude Include="TimerDebug.h">
-      <Filter>AdventureCheckpoints</Filter>
+      <Filter>AdventureCheckpoints\Headers\Listeners</Filter>
     </ClInclude>
     <ClInclude Include="CheckpointsExtended.h">
-      <Filter>AdventureCheckpoints</Filter>
+      <Filter>AdventureCheckpoints\Headers\Cheats</Filter>
+    </ClInclude>
+    <ClInclude Include="GoToAct.h">
+      <Filter>AdventureCheckpoints\Headers\Cheats</Filter>
     </ClInclude>
     <ClInclude Include="PrintCheckpointStatus.h">
-      <Filter>AdventureCheckpoints</Filter>
+      <Filter>AdventureCheckpoints\Headers\Cheats</Filter>
+    </ClInclude>
+    <ClInclude Include="TimerDebug.h">
+      <Filter>AdventureCheckpoints\Headers\Cheats</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -54,29 +69,29 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Internal</Filter>
     </ClCompile>
-    <ClCompile Include="GoToAct.cpp">
-      <Filter>AdventureCheckpoints</Filter>
-    </ClCompile>
-    <ClCompile Include="ContinueCheckpointButton.cpp">
-      <Filter>AdventureCheckpoints</Filter>
-    </ClCompile>
-    <ClCompile Include="AdventureEndScreenListener.cpp">
-      <Filter>AdventureCheckpoints</Filter>
-    </ClCompile>
     <ClCompile Include="AdventureTimer.cpp">
       <Filter>AdventureCheckpoints</Filter>
     </ClCompile>
+    <ClCompile Include="AdventureEndScreenListener.cpp">
+      <Filter>AdventureCheckpoints\Listeners</Filter>
+    </ClCompile>
+    <ClCompile Include="ContinueCheckpointButton.cpp">
+      <Filter>AdventureCheckpoints\Listeners</Filter>
+    </ClCompile>
     <ClCompile Include="TimerListener.cpp">
-      <Filter>AdventureCheckpoints</Filter>
-    </ClCompile>
-    <ClCompile Include="TimerDebug.cpp">
-      <Filter>AdventureCheckpoints</Filter>
-    </ClCompile>
-    <ClCompile Include="CheckpointsExtended.cpp">
-      <Filter>AdventureCheckpoints</Filter>
+      <Filter>AdventureCheckpoints\Listeners</Filter>
     </ClCompile>
     <ClCompile Include="PrintCheckpointStatus.cpp">
-      <Filter>AdventureCheckpoints</Filter>
+      <Filter>AdventureCheckpoints\Cheats</Filter>
+    </ClCompile>
+    <ClCompile Include="TimerDebug.cpp">
+      <Filter>AdventureCheckpoints\Cheats</Filter>
+    </ClCompile>
+    <ClCompile Include="CheckpointsExtended.cpp">
+      <Filter>AdventureCheckpoints\Cheats</Filter>
+    </ClCompile>
+    <ClCompile Include="GoToAct.cpp">
+      <Filter>AdventureCheckpoints\Cheats</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

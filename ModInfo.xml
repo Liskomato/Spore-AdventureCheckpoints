@@ -1,4 +1,4 @@
-<mod displayName="Adventure Checkpoints" unique="AdventureCheckpoints" description="Allows players to restart adventures from their most recent act after failure. Also adds timer and death counter to the UI." installerSystemVersion="1.0.1.2" hasCustomInstaller="false" isExperimental="true" dllsBuild="2.5.277">
+<mod displayName="Adventure Checkpoints" unique="AdventureCheckpoints" description="Allows players to restart adventures from their most recent act after failure. Also adds timer and death counter to the UI." installerSystemVersion="1.0.1.2" hasCustomInstaller="false" isExperimental="true" dllsBuild="2.5.278">
 <prerequisite game="GalacticAdventures">!!!!!!!!!!!!AdventureCheckpoints.package</prerequisite>
 <prerequisite>AdventureCheckpoints.dll</prerequisite>
 <remove game="GalacticAdventures">*AdventureCheckpoints*</remove>

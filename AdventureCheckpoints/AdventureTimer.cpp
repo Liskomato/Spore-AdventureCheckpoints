@@ -248,7 +248,7 @@ bool AdventureTimer::LoadData() {
 
 void AdventureTimer::PrintStatus() {
 	
-	App::ConsolePrintF("--- Adventure Checkpoints: Settings status ---");
+	App::ConsolePrintF("\n--- Adventure Checkpoints: Settings status ---");
 
 	if (visible) App::ConsolePrintF("- Timer UI is visible in adventure play mode.");
 	else App::ConsolePrintF("- Timer UI is hidden. You can enable it by toggling 'T' key.");
@@ -257,4 +257,5 @@ void AdventureTimer::PrintStatus() {
 	else App::ConsolePrintF("- Checkpoints appear only when failing an adventure past act 1.");
 
 	if (debugEnabled) App::ConsolePrintF("- Debug mode is enabled.");
+	App::ConsolePrintF("----------------------------------------------\n");
 }
