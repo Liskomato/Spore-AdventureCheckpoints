@@ -120,7 +120,7 @@ member_detour(cScenarioPlayMode_Initialize_detour, Simulator::cScenarioPlayMode,
 		{
 			// Restore playtime, summary, and furthest act reached from the previous adventure run, if "Continue from Previous Act" button was pressed.
 
-			ScenarioMode.GetPlayMode()->mSummary = screenListener->RestoreSummary();
+			ScenarioMode.GetPlayMode()->mSummary.mNumDeaths = screenListener->RestoreSummary().mNumDeaths;
 			
 			ScenarioMode.GetPlayMode()->mCurrentTimeMS = screenListener->RestoreTime();
 
