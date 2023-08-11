@@ -82,8 +82,9 @@ int AdventureEndScreenListener::RestoreTime() {
 	return storedTime;
 }
 
-Simulator::cScenarioPlaySummary AdventureEndScreenListener::RestoreSummary() {
-	return storedSummary;
+void AdventureEndScreenListener::RestoreSummary() {
+	auto& startSummary = ScenarioMode.GetPlayMode()->mSummary;
+	startSummary = storedSummary;
 }
 /*
 void AdventureEndScreenListener::SetTime(int time) {

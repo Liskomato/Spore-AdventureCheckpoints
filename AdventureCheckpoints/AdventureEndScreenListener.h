@@ -24,7 +24,7 @@ public:
 	bool IsCheckpointActivated();
 	int GetStoredAdventureIndex();
 	int RestoreTime();
-	Simulator::cScenarioPlaySummary RestoreSummary();
+	void RestoreSummary();
 //	void SetTime(int time);
 
 private:

@@ -120,7 +120,7 @@ member_detour(cScenarioPlayMode_Initialize_detour, Simulator::cScenarioPlayMode,
 		{
 			// Restore playtime, summary, and furthest act reached from the previous adventure run, if "Continue from Previous Act" button was pressed.
 
-			ScenarioMode.GetPlayMode()->mSummary.mNumDeaths = screenListener->RestoreSummary().mNumDeaths;
+			screenListener->RestoreSummary();
 			
 			ScenarioMode.GetPlayMode()->mCurrentTimeMS = screenListener->RestoreTime();
 
@@ -132,8 +132,9 @@ member_detour(cScenarioPlayMode_Initialize_detour, Simulator::cScenarioPlayMode,
 				// field_90 needs to be set to 3, otherwise JumpToAct will fail.
 				ScenarioMode.GetPlayMode()->field_90 = 3;
 
-				// Skip to the act we recorded
+				// Skip to the act we recorded. Because this function adds duplicate information to the summary that we may not need, we restore the summary yet again.
 				ScenarioMode.GetPlayMode()->JumpToAct(lastAct);
+				screenListener->RestoreSummary();
 			}
 
 		}
