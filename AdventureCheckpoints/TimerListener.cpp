@@ -57,7 +57,11 @@ bool TimerListener::HandleUIMessage(IWindow* window, const Message& message)
 				return true;
 			}
 		}
-		
+		else if (message.IsType(kMsgKeyDown) && (message.Key.vkey == 'r' || message.Key.vkey == 'R') && message.Key.modifiers == kModifierCtrlDown
+			&& Simulator::IsScenarioMode() && ScenarioMode.GetMode() == App::cScenarioMode::Mode::PlayMode) {
+			ScenarioMode.GetPlayMode()->JumpToAct(ScenarioMode.GetPlayMode()->mCurrentActIndex);
+			return true;
+		}
 	}
 	// Return true if the message was handled, and therefore no other window procedure should receive it.
 	return false;

@@ -15,6 +15,7 @@ TimerDebug
 AdventureChe
 no-no
 Adventure
+resultscreen_example
 ru-ru
 AdventureCheckpoint
 Adventu
