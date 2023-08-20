@@ -116,9 +116,11 @@ member_detour(cScenarioPlayMode_Initialize_detour, Simulator::cScenarioPlayMode,
 
 	void detoured()
 	{
+		// Setting field_90 to 0 before the original function will skip the opening cinematic.
+		if (screenListener->IsCheckpointActivated()) this->field_90 = 0;
+		
 		// We want the original function to run first, so we can do our things afterwards.
 		original_function(this);
-
 		// Check if the checkpoint button was pressed.
 		if (screenListener->IsCheckpointActivated())
 		{
@@ -126,7 +128,7 @@ member_detour(cScenarioPlayMode_Initialize_detour, Simulator::cScenarioPlayMode,
 
 			screenListener->RestoreSummary();
 			
-			ScenarioMode.GetPlayMode()->mCurrentTimeMS = screenListener->RestoreTime();
+			this->mCurrentTimeMS = screenListener->RestoreTime();
 
 			int lastAct = screenListener->GetStoredAdventureIndex();
 
@@ -134,10 +136,10 @@ member_detour(cScenarioPlayMode_Initialize_detour, Simulator::cScenarioPlayMode,
 			if (lastAct != 0) {
 
 				// field_90 needs to be set to 3, otherwise JumpToAct will fail.
-				ScenarioMode.GetPlayMode()->field_90 = 3;
+				this->field_90 = 3;
 
 				// Skip to the act we recorded. Because this function adds duplicate information to the summary that we may not need, we restore the summary yet again.
-				ScenarioMode.GetPlayMode()->JumpToAct(lastAct);
+				this->JumpToAct(lastAct);
 				screenListener->RestoreSummary();
 			}
 
