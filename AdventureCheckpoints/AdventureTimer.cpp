@@ -42,16 +42,37 @@ void AdventureTimer::Update()
 		{
 			if (WindowManager.GetMainWindow()->FindWindowByID(id("CheckpointButton")) != nullptr)
 			{
+				/// All the needed pointers.
+				/// p1, p2: Parents
+				/// c1, c2: Container windows
+				/// b1, b2: Buttons
+				/// bo1, bo2: Original "Replay" buttons, where we copy our sizes from.
+				IWindowPtr p1, p2, c1, c2, b1, b2, bo1, bo2;
+				p1 = WindowManager.GetMainWindow()->FindWindowByID(0x07C796D0),
+				bo1 = p1->FindWindowByID(0x07C79940, false),
+				c1 = p1->FindWindowByID(id("CheckpointButton")),
+
+				p2 = WindowManager.GetMainWindow()->FindWindowByID(0x07C79820),
+				bo2 = p2->FindWindowByID(0x07C79940, false),
+				c2 = p2->FindWindowByID(id("CheckpointButton")),
+
+				b1 = c1->FindWindowByID(0x07C79940), b2 = c2->FindWindowByID(0x07C79940);
+				
+				b1->SetSize(bo1->GetArea().GetWidth()+10,bo1->GetArea().GetHeight());
+				b2->SetSize(bo2->GetArea().GetWidth()+10,bo2->GetArea().GetHeight());
+
+				/// Setting visibility state based on conditions.
 				if ((ScenarioMode.GetPlayMode()->field_90 == 6 && ScenarioMode.GetPlayMode()->mCurrentActIndex != 0) || checkpointsExtended)
 				{
-					WindowManager.GetMainWindow()->FindWindowByID(0x07C796D0)->FindWindowByID(id("CheckpointButton"))->SetVisible(true);
-					WindowManager.GetMainWindow()->FindWindowByID(0x07C79820)->FindWindowByID(id("CheckpointButton"))->SetVisible(true);
+					c1->SetVisible(true);
+					c2->SetVisible(true);
 				}
 				else 
 				{
-					WindowManager.GetMainWindow()->FindWindowByID(0x07C796D0)->FindWindowByID(id("CheckpointButton"))->SetVisible(false);
-					WindowManager.GetMainWindow()->FindWindowByID(0x07C79820)->FindWindowByID(id("CheckpointButton"))->SetVisible(false);
+					c1->SetVisible(false);
+					c2->SetVisible(false);
 				}
+				
 			}
 			if (WindowManager.GetMainWindow()->FindWindowByID(id("Text")) != nullptr)
 			{

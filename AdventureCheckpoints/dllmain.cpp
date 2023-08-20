@@ -69,13 +69,14 @@ member_detour(UILayoutLoad_detour, UILayout, bool(const ResourceKey&, bool, uint
 			if (Button2->LoadByName(u"CheckpointButtonUI"))
 			Button2->SetParentWindow(this->FindWindowByID(0x07C79820));
 
-			IWindowPtr winBtn, parent;
+			IWindowPtr winBtn, parent, ogBtn;
 			if (Button->FindWindowByID(id("CheckpointButton")) != nullptr) {
 
 				winBtn = Button->FindWindowByID(id("CheckpointButton"));
 				parent = winBtn->GetParent();
+				ogBtn = parent->FindWindowByID(0x07C79940, false);
 				parent->BringToFront(winBtn.get());
-				parent->BringToFront(parent->FindWindowByID(0x07C79940,false));
+				parent->BringToFront(ogBtn.get());
 				winBtn->SetLocation(168, 520);
 				winBtn->FindWindowByID(0x07C79940)->AddWinProc(new ContinueCheckpointButton());
 				winBtn->SetVisible(false);
@@ -84,8 +85,9 @@ member_detour(UILayoutLoad_detour, UILayout, bool(const ResourceKey&, bool, uint
 			if (Button2->FindWindowByID(id("CheckpointButton")) != nullptr) {
 				winBtn = Button2->FindWindowByID(id("CheckpointButton"));
 				parent = winBtn->GetParent();
+				ogBtn = parent->FindWindowByID(0x07C79940, false);
 				parent->BringToFront(winBtn.get());
-				parent->BringToFront(parent->FindWindowByID(0x07C79940, false));
+				parent->BringToFront(ogBtn.get());
 				winBtn->SetLocation(168, 206);
 				winBtn->FindWindowByID(0x07C79940)->AddWinProc(new ContinueCheckpointButton());
 				winBtn->SetVisible(false);
