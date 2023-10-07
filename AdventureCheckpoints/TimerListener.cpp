@@ -46,16 +46,9 @@ bool TimerListener::HandleUIMessage(IWindow* window, const Message& message)
 		timer = AdventureTimer::Get();
 		if (message.IsType(kMsgKeyDown) && (message.Key.vkey == 't' || message.Key.vkey == 'T')) 
 		{
-			if (message.Key.modifiers == kModifierCtrlDown + kModifierShiftDown) 
-			{
-				timer->debugEnabled = !timer->debugEnabled;
-				return true;
-			}
-			else 
-			{
-				timer->visible = !timer->visible;
-				return true;
-			}
+			timer->visible = !timer->visible;
+			return true;
+		
 		}
 		else if (message.IsType(kMsgKeyDown) && (message.Key.vkey == 'r' || message.Key.vkey == 'R') && message.Key.modifiers == kModifierCtrlDown
 			&& Simulator::IsScenarioMode() && ScenarioMode.GetMode() == App::cScenarioMode::Mode::PlayMode) {

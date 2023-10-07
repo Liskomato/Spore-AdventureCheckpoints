@@ -114,13 +114,25 @@ member_detour(UILayoutLoad_detour, UILayout, bool(const ResourceKey&, bool, uint
 
 };
 
+void PrintDebugInformation() {
+	if (timer->debugEnabled) 
+	{
+		App::ConsolePrintF("checkpointsExtended: %s\nClock visible: %s\nStored adventure index: %d\nStored time: %d\n", timer->checkpointsExtended ? "true" : "false", timer->visible ? "true" : "false", screenListener->GetStoredAdventureIndex(), screenListener->RestoreTime());
+	}
+}
+
 member_detour(cScenarioPlayMode_Initialize_detour, Simulator::cScenarioPlayMode, void(void)) {
 
 	void detoured()
 	{
 		// Setting field_90 to 0 before the original function will skip the opening cinematic.
-		if (screenListener->IsCheckpointActivated()) this->field_90 = 0;
-		
+		if (screenListener->IsCheckpointActivated()) {
+			this->mCurrentPlayModeState = Simulator::ScenarioPlayModeState::EditorStart;
+			if (timer->debugEnabled) {
+				App::ConsolePrintF("Skipped opening cinematic.");
+				PrintDebugInformation();
+			}
+		}
 		// We want the original function to run first, so we can do our things afterwards.
 		original_function(this);
 		// Check if the checkpoint button was pressed.
@@ -137,23 +149,25 @@ member_detour(cScenarioPlayMode_Initialize_detour, Simulator::cScenarioPlayMode,
 			// Check if we need to go ahead in acts.
 			if (lastAct != 0) {
 
-				// field_90 needs to be set to 3, otherwise JumpToAct will fail.
-				this->field_90 = 3;
+				// Current state needs to be set to Active, otherwise JumpToAct will fail.
+				this->mCurrentPlayModeState = Simulator::ScenarioPlayModeState::Active;
 
 				// Skip to the act we recorded. Because this function adds duplicate information to the summary that we may not need, we restore the summary yet again.
 				this->JumpToAct(lastAct);
 				screenListener->RestoreSummary();
 			}
-
+			if (timer->debugEnabled) {
+				App::ConsolePrintF("Checkpoint procedure complete.");
+			}
 		}
 		// Send a message afterwards to the listener to clean up.	
 		MessageManager.MessageSend(id("EndCheckpointProc"), nullptr);
-
+		PrintDebugInformation();
 		//	MessageManager.MessageSend(id("TimeRestored"), nullptr);
 		
 		// Setting up text layout for timer + death counter.
 		Text1 = new UILayout(); // Timer + Death counter
-		Text2 = new UILayout(); // Debug information, visibility controlled by CheckpointDebug cheat.
+		//Text2 = new UILayout(); // Debug information, visibility controlled by CheckpointDebug cheat.
 		if (Text1->LoadByName(u"Timer") && WindowManager.GetMainWindow()->FindWindowByID(0xec2fd2c3) != nullptr) {
 			Text1->SetParentWindow(WindowManager.GetMainWindow()->FindWindowByID(0xec2fd2c3));
 		}
@@ -168,19 +182,31 @@ member_detour(cScenarioPlayMode_Initialize_detour, Simulator::cScenarioPlayMode,
 			}
 		}
 
-		// Debug text layout
-		if (Text2->LoadByName(u"TimerDebug")) {
-			Text2->SetParentWindow(WindowManager.GetMainWindow());
-			if (Text2->FindWindowByID(id("TextDebug")) != nullptr) {
-				text = Text2->FindWindowByID(id("TextDebug"));
-				text->SetLocation(10, 400);
-				text->SetVisible(timer->debugEnabled);
-			}
-		}
+		// Debug text layout - Separated from this mod
+		//if (Text2->LoadByName(u"TimerDebug")) {
+		//	Text2->SetParentWindow(WindowManager.GetMainWindow());
+		//	if (Text2->FindWindowByID(id("TextDebug")) != nullptr) {
+		//		text = Text2->FindWindowByID(id("TextDebug"));
+		//		text->SetLocation(10, 400);
+		//		text->SetVisible(timer->debugEnabled);
+		//	}
+		//}
 
 
 	}
 
+};
+
+member_detour(cScenarioPlayMode_JumpToAct_detour,Simulator::cScenarioPlayMode,void(int)){
+	void detoured(int actIndex) 
+	{
+		if (timer->debugEnabled) {
+			int oldAct = this->mCurrentActIndex + 1;
+			int newAct = actIndex + 1;
+			App::ConsolePrintF("Moving from act %d to act %d",oldAct,newAct);
+		}
+		original_function(this,actIndex);
+	}
 };
 
 
@@ -207,6 +233,7 @@ void AttachDetours()
 
 	cScenarioPlayMode_Initialize_detour::attach(GetAddress(Simulator::cScenarioPlayMode, Initialize));
 	UILayoutLoad_detour::attach(GetAddress(UTFWin::UILayout,Load));
+	cScenarioPlayMode_JumpToAct_detour::attach(GetAddress(Simulator::cScenarioPlayMode,JumpToAct));
 
 	/// Unused detours
 	//	ScenarioRewardScreen_detour::attach(Address(ModAPI::ChooseAddress(0xf18c40,0xf18850)));

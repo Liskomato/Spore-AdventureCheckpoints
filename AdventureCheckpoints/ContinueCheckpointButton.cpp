@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "ContinueCheckpointButton.h"
 #include "GoToAct.h"
+#include "AdventureTimer.h"
 
 ContinueCheckpointButton::ContinueCheckpointButton()
 {
@@ -48,7 +49,10 @@ bool ContinueCheckpointButton::HandleUIMessage(IWindow* window, const Message& m
 	if (message.IsType(kMsgComponentActivated))
 	{
 	//	App::ConsolePrintF("Button hit. Something should happen.");
-		App::ConsolePrintF("Restarting from the current act...");
+		if (timer->debugEnabled) 
+		{ 
+			App::ConsolePrintF("Beginning checkpoint procedure.");
+		}
 	
 	//	Send message to the listener knowing that the checkpoint button was pressed.
 		MessageManager.MessageSend(id("StartCheckpointProc"),nullptr);
