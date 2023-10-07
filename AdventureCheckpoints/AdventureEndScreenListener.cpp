@@ -82,6 +82,10 @@ int AdventureEndScreenListener::RestoreTime() {
 	return storedTime;
 }
 
+int AdventureEndScreenListener::GetStoredDeaths() {
+	return storedSummary.mNumDeaths;
+}
+
 void AdventureEndScreenListener::RestoreSummary() {
 	auto& startSummary = ScenarioMode.GetPlayMode()->mSummary;
 	startSummary = storedSummary;

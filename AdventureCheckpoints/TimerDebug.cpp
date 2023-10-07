@@ -21,6 +21,9 @@ void TimerDebug::ParseLine(const ArgScript::Line& line)
 		time->debugEnabled = !time->debugEnabled;
 		if (time->debugEnabled) App::ConsolePrintF("Adventure Checkpoints: Debug mode enabled.");
 		else App::ConsolePrintF("Adventure Checkpoints: Debug mode disabled.");
+		if (!time->SaveData()) {
+			App::ConsolePrintF("Adventure Checkpoints: SaveData failed! Settings file will be attempted to be created to %ls once the game is closed.", time->GetFilePath().c_str());
+		}
 	}
 	else App::ConsolePrintF("Adventure Checkpoints: CheckpointsDebug failed!");
 

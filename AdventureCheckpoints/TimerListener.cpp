@@ -43,10 +43,9 @@ int TimerListener::GetEventFlags() const
 bool TimerListener::HandleUIMessage(IWindow* window, const Message& message)
 {
 	if (AdventureTimer::Get() != nullptr) {
-		timer = AdventureTimer::Get();
 		if (message.IsType(kMsgKeyDown) && (message.Key.vkey == 't' || message.Key.vkey == 'T')) 
 		{
-			timer->visible = !timer->visible;
+			Timer.visible = !Timer.visible;
 			return true;
 		
 		}

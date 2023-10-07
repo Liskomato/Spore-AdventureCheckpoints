@@ -21,6 +21,9 @@ void CheckpointsExtended::ParseLine(const ArgScript::Line& line)
 		time->checkpointsExtended = !time->checkpointsExtended;
 		if (time->checkpointsExtended) App::ConsolePrintF("Adventure Checkpoints: Checkpoints now appear every time the adventure ends.");
 		else App::ConsolePrintF("Adventure Checkpoints: Checkpoints now only appear after failing the adventure past act 1.");
+		if (!time->SaveData()) {
+			App::ConsolePrintF("Adventure Checkpoints: SaveData failed! Settings file will be attempted to be created to %ls once the game is closed.", time->GetFilePath().c_str());
+		}
 	}
 	else App::ConsolePrintF("Adventure Checkpoints: CheckpointsExtended failed!");
 }

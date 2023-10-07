@@ -4,6 +4,7 @@
 #include "TimerListener.h"
 
 #define AdventureTimerPtr intrusive_ptr<AdventureTimer>
+#define Timer (*AdventureTimer::Get())
 
 class AdventureTimer 
 	: public Object
@@ -13,7 +14,7 @@ class AdventureTimer
 public:
 	static const uint32_t TYPE = id("AdventureTimer");
 	
-	AdventureTimer();
+	
 	~AdventureTimer();
 
 	TimerListenerPtr listener;
@@ -27,14 +28,14 @@ public:
 	void* Cast(uint32_t type) const override;
 
 	void InitializeListener();
-	static AdventureTimerPtr Get();
-	static AdventureTimerPtr Initialize();
+	static AdventureTimer* Get();
 	void Dispose();
 
 	string16 GetFilePath();
 	bool LoadData();
-	bool SaveData(App::PropertyList* propList, IO::FileStream* stream, bool debug, bool visible, bool extended);
+	bool SaveData();
 	void PrintStatus();
+private:
+	AdventureTimer();
+	static AdventureTimer* timer;
 };
-
-static AdventureTimerPtr timer = nullptr;

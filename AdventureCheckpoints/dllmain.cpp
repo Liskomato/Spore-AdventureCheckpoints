@@ -35,7 +35,6 @@ void Initialize()
 
 	// "Static" pointers
 	screenListener = new AdventureEndScreenListener();
-	timer = AdventureTimer::Initialize();
 
 	// Listeners
 	MessageManager.AddUnmanagedListener(screenListener.get(), id("StartCheckpointProc"));
@@ -43,7 +42,7 @@ void Initialize()
 //	MessageManager.AddUnmanagedListener(screenListener.get(), id("TimeRestored"));
 
 	// Update functions
-	App::AddUpdateFunction(timer.get());
+	App::AddUpdateFunction(AdventureTimer::Get());
 
 	// Check base address (Mod research)
 //	App::ConsolePrintF("Base address: 0x%x",baseAddress);
@@ -115,9 +114,9 @@ member_detour(UILayoutLoad_detour, UILayout, bool(const ResourceKey&, bool, uint
 };
 
 void PrintDebugInformation() {
-	if (timer->debugEnabled) 
+	if (Timer.debugEnabled) 
 	{
-		App::ConsolePrintF("checkpointsExtended: %s\nClock visible: %s\nStored adventure index: %d\nStored time: %d\n", timer->checkpointsExtended ? "true" : "false", timer->visible ? "true" : "false", screenListener->GetStoredAdventureIndex(), screenListener->RestoreTime());
+		App::ConsolePrintF("checkpointsExtended: %s\nClock visible: %s\nStored act index: %d\nStored time: %d\nStored deaths: %d", Timer.checkpointsExtended ? "true" : "false", Timer.visible ? "true" : "false", screenListener->GetStoredAdventureIndex(), screenListener->RestoreTime(),screenListener->GetStoredDeaths());
 	}
 }
 
@@ -128,7 +127,7 @@ member_detour(cScenarioPlayMode_Initialize_detour, Simulator::cScenarioPlayMode,
 		// Setting field_90 to 0 before the original function will skip the opening cinematic.
 		if (screenListener->IsCheckpointActivated()) {
 			this->mCurrentPlayModeState = Simulator::ScenarioPlayModeState::EditorStart;
-			if (timer->debugEnabled) {
+			if (Timer.debugEnabled) {
 				App::ConsolePrintF("Skipped opening cinematic.");
 				PrintDebugInformation();
 			}
@@ -156,7 +155,7 @@ member_detour(cScenarioPlayMode_Initialize_detour, Simulator::cScenarioPlayMode,
 				this->JumpToAct(lastAct);
 				screenListener->RestoreSummary();
 			}
-			if (timer->debugEnabled) {
+			if (Timer.debugEnabled) {
 				App::ConsolePrintF("Checkpoint procedure complete.");
 			}
 		}
@@ -175,11 +174,10 @@ member_detour(cScenarioPlayMode_Initialize_detour, Simulator::cScenarioPlayMode,
 		if (Text1->FindWindowByID(id("Text")) != nullptr) {
 			text = Text1->FindWindowByID(id("Text"));
 			text->SetLocation(10, 350);
-			if (timer != nullptr) {
-				timer->InitializeListener();
-				WindowManager.GetMainWindow()->AddWinProc(timer->listener.get());
-				text->SetVisible(timer->visible);
-			}
+			Timer.InitializeListener();
+			WindowManager.GetMainWindow()->AddWinProc(Timer.listener.get());
+			text->SetVisible(Timer.visible);
+			
 		}
 
 		// Debug text layout - Separated from this mod
@@ -200,7 +198,7 @@ member_detour(cScenarioPlayMode_Initialize_detour, Simulator::cScenarioPlayMode,
 member_detour(cScenarioPlayMode_JumpToAct_detour,Simulator::cScenarioPlayMode,void(int)){
 	void detoured(int actIndex) 
 	{
-		if (timer->debugEnabled) {
+		if (Timer.debugEnabled) {
 			int oldAct = this->mCurrentActIndex + 1;
 			int newAct = actIndex + 1;
 			App::ConsolePrintF("Moving from act %d to act %d",oldAct,newAct);
@@ -224,8 +222,7 @@ void Dispose()
 	screenListener = nullptr;
 
 	// Timer object
-	timer->Dispose();
-	timer = nullptr;
+	Timer.Dispose();
 }
 
 void AttachDetours()

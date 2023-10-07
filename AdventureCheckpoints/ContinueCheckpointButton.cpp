@@ -49,7 +49,7 @@ bool ContinueCheckpointButton::HandleUIMessage(IWindow* window, const Message& m
 	if (message.IsType(kMsgComponentActivated))
 	{
 	//	App::ConsolePrintF("Button hit. Something should happen.");
-		if (timer->debugEnabled) 
+		if (Timer.debugEnabled) 
 		{ 
 			App::ConsolePrintF("Beginning checkpoint procedure.");
 		}

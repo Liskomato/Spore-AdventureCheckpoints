@@ -26,6 +26,7 @@ public:
 	int RestoreTime();
 	void RestoreSummary();
 //	void SetTime(int time);
+	int GetStoredDeaths();
 
 private:
 	bool checkpointEnabled;
