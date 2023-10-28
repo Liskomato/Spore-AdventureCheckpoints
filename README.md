@@ -1,6 +1,9 @@
 # Adventure Checkpoints
 ![](Pictures/CheckpointVisible.png)
 
+### Video Demonstration: https://www.youtube.com/watch?v=vBlM3RKrvws
+### Latest release can be found [here](https://github.com/Liskomato/Spore-AdventureCheckpoints/releases/latest).
+
 A new kind of Spore ModAPI mod which will allow players to restore their progress on failed adventures - something unheard of for over 14 years!
 
 This mod adds a checkpoint system to Spore: Galactic Adventures where if you fail an adventure in any way, you will now be able to restart from the start of act you were on, not just from act 1 (though this option is still available for you if you wanted to restart from the beginning). 
