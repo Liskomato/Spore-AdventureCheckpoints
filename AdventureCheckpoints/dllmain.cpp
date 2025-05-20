@@ -7,6 +7,7 @@
 #include "PrintCheckpointStatus.h"
 // Timer
 #include "AdventureTimer.h"
+#include <Spore/Input.h>
 // Listeners
 #include "AdventureEndScreenListener.h"
 #include "ContinueCheckpointButton.h"
@@ -28,7 +29,7 @@ void Initialize()
 	//  - Change materials
 
 	// Cheats
-	CheatManager.AddCheat("GoToAct", new GoToAct());
+	CheatManager.AddCheat("GoToAct", new GoToAct(),true);
 	CheatManager.AddCheat("CheckpointsDebug", new TimerDebug());
 	CheatManager.AddCheat("CheckpointsExtended", new CheckpointsExtended());
 	CheatManager.AddCheat("CheckpointsStatus", new PrintCheckpointStatus());
@@ -174,8 +175,8 @@ member_detour(cScenarioPlayMode_Initialize_detour, Simulator::cScenarioPlayMode,
 		if (Text1->FindWindowByID(id("Text")) != nullptr) {
 			text = Text1->FindWindowByID(id("Text"));
 			text->SetLocation(10, 350);
-			Timer.InitializeListener();
-			WindowManager.GetMainWindow()->AddWinProc(Timer.listener.get());
+		//	Timer.InitializeListener();
+		//	WindowManager.GetMainWindow()->AddWinProc(Timer.listener.get());
 			text->SetVisible(Timer.visible);
 			
 		}
@@ -193,6 +194,21 @@ member_detour(cScenarioPlayMode_Initialize_detour, Simulator::cScenarioPlayMode,
 
 	}
 
+};
+
+member_detour(GameInput_OnKeyUp_GA_detour, GameInput, void(int, KeyModifiers)) {
+	void detoured(int vkCode,KeyModifiers modifiers) {
+		
+		if (Simulator::IsScenarioMode() && ScenarioMode.GetMode() == App::cScenarioMode::Mode::PlayMode) {
+			if (vkCode == 't' || vkCode == 'T') {
+				Timer.visible = !Timer.visible;
+			}
+			else if ((vkCode == 'r' || vkCode == 'R') && keyModifiers.value == KeyModifierFlags::kModifierCtrlDown) {
+				ScenarioMode.GetPlayMode()->JumpToAct(ScenarioMode.GetPlayMode()->mCurrentActIndex);
+			}
+		}
+		original_function(this, vkCode, modifiers);
+	}
 };
 
 member_detour(cScenarioPlayMode_JumpToAct_detour,Simulator::cScenarioPlayMode,void(int)){
@@ -231,6 +247,7 @@ void AttachDetours()
 	cScenarioPlayMode_Initialize_detour::attach(GetAddress(Simulator::cScenarioPlayMode, Initialize));
 	UILayoutLoad_detour::attach(GetAddress(UTFWin::UILayout,Load));
 	cScenarioPlayMode_JumpToAct_detour::attach(GetAddress(Simulator::cScenarioPlayMode,JumpToAct));
+	GameInput_OnKeyUp_GA_detour::attach(GetAddress(GameInput, OnKeyDown));
 
 	/// Unused detours
 	//	ScenarioRewardScreen_detour::attach(Address(ModAPI::ChooseAddress(0xf18c40,0xf18850)));
