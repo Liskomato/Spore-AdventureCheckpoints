@@ -1,7 +1,11 @@
-<mod displayName="Adventure Checkpoints" unique="AdventureCheckpoints" description="Allows players to restart adventures from their most recent act after failure. Also adds timer and death counter to the UI." installerSystemVersion="1.0.1.2" hasCustomInstaller="false" isExperimental="false" dllsBuild="2.5.280">
+<mod displayName="Adventure Timer + Checkpoints" unique="AdventureCheckpoints" description="Adventure Checkpoints allows players to restart adventures from their most recent act after failure, while including a timer and a death counter in the UI.  Adventure Timer adds just the timer and nothing else so it is allowed for speedrunning." installerSystemVersion="1.0.1.2" hasCustomInstaller="true" isExperimental="false" dllsBuild="2.5.395">
+<componentGroup unique="CheckpointsVersion" displayName="Mod Version">
+    <component unique="AdventureTimer" displayName="Adventure Timer" description="This mod adds an in-game timer UI to the adventure play mode that can be toggled on/off with the T key. No other features of Adventure Checkpoints are enabled." imagePlacement="After" defaultChecked="true">AdventureTimer.dll?AdventureTimer.pdb</component>
+    <component unique="AdventureCheckpoints" displayName="Adventure Checkpoints" description="The original Adventure Checkpoints mod, with all of its features enabled. Includes cheats to change checkpoint mode, debug mode and the ability to jump to any act of choice (this will disable achievements)." imagePlacement="After">AdventureCheckpoints.dll?AdventureCheckpoints.pdb</component>
+</componentGroup>
 <prerequisite game="GalacticAdventures">!!!!!!!!!!!!AdventureCheckpoints.package</prerequisite>
-<prerequisite>AdventureCheckpoints.dll</prerequisite>
 <remove game="GalacticAdventures">*AdventureCheckpoints*</remove>
 <remove game="Spore">*AdventureCheckpoints*</remove>
-<remove>AdventureCheckpoints.dll</remove>
+<remove>AdventureCheckpoints.dll?AdventureCheckpoints.pdb</remove>
+<remove>AdventureTimer.dll?AdventureTimer.pdb</remove>
 </mod>

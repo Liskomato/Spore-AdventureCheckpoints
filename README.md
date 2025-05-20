@@ -1,24 +1,35 @@
-# Adventure Checkpoints
-![](Pictures/CheckpointVisible.png)
+
+![](Pictures/GitHubBanner.png)
 
 ### Video Demonstration: https://www.youtube.com/watch?v=vBlM3RKrvws
 ### Latest release can be found [here](https://github.com/Liskomato/Spore-AdventureCheckpoints/releases/latest).
 
-A new kind of Spore ModAPI mod which will allow players to restore their progress on failed adventures - something unheard of for over 14 years!
+This is a compilation mod of two separate mods: Adventure Timer **(New!)** and Adventure Checkpoints. You can choose which mod to install within the installer, but otherwise you can only have one of them installed at a time.
 
-This mod adds a checkpoint system to Spore: Galactic Adventures where if you fail an adventure in any way, you will now be able to restart from the start of act you were on, not just from act 1 (though this option is still available for you if you wanted to restart from the beginning). 
+## Adventure Timer
+
+Adventure Timer adds an in-game timer to Spore: Galactic Adventures play mode, allowing you to see your adventure's time before the end results screen.  
+This is a stripped-down version of the timer found in Adventure Checkpoints, and doesn't feature a death counter in it. Like the Adventure Checkpoints timer, this UI can be toggled on/off with the ``T`` key.  
+
+![](Pictures/StandaloneTimer.png)  
+
+## Adventure Checkpoints
+![](Pictures/CheckpointVisible.png)  
+
+This Spore ModAPI mod adds a checkpoint system to Spore: Galactic Adventures where if you fail an adventure in any way, you will now be able to restart from the start of act you were on, not just from act 1 (though this option is still available for you if you wanted to restart from the beginning). 
 
 Also, when you use the checkpoint system to restart from an act, your time and summary will also be restored for the next attempt, meaning you can get a total amount of time taken to complete an adventure when you actually manage to finish it (including with counting the deaths that you took in that time, although failing goals like Protect won't count for that).
 
 The mod will also come with three new cheats such as a cheat to jump to any act of your choosing with a time penalty of 30 minutes per act when going forward, a cheat that will allow you to use checkpoints in act 1 or after completing an adventure, and a cheat to check the current settings of the mod.
 
-## In summary...
+### In summary...
 - New button has been added to the adventure results screen: ``Resume``
   - Said button will restart the adventure, starting from the act you failed/succeeded in. Your play summary and time are preserved.
 - New cheats: ``gotoact``, ``checkpointsExtended`` and ``checkpointsStatus``
    - `gotoact`
       - How to use: input ``gotoact <act>`` in the cheat console (``CTRL+SHIFT+C``), with `<act>` being the number of the act you want to enter
       - Using said cheat to go forward in acts will incur a penalty of 30 minutes per act skipped.
+      - It will also disable achievements / trigger the Joker badge.
    - `checkpointsExtended`
       - Usage: Inputting the cheat will toggle whether checkpoints appear in situations outside of adventure failure after act 1.
    - `checkpointsStatus`

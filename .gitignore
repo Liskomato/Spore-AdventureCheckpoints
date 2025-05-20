@@ -403,3 +403,8 @@ FodyWeavers.xsd
 *.sporemod
 *.zip
 *.package
+
+# Sporemod components
+AdventureTimer.png
+AdventureCheckpoints.png
+Branding.png
